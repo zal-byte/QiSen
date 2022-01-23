@@ -5,8 +5,10 @@
 
 
 	class ABSEN implements query{
+
 		private static $instance = null;
 		private static $response = null;
+
 		public static function getInstance()
 		{
 			if( self::$instance == null)
@@ -18,41 +20,50 @@
 
 		public static function GetAbsen( $data )
 		{
+			Handler::$context = 'GetAbsen';
 
 			self::$response['GetAbsen'] = array();
-			$grade = Handler::VALIDATE( $data, 'grade');
+
+			$kelas = Handler::VALIDATE( $data, 'kelas');
 			$absen_tanggal = Handler::VALIDATE( $data, 'absen_tanggal');
 
-			$prepare = Handler::PREPARE( ABSEN::getAbsen, array('grade'=>$grade,'absen_tanggal'=>$absen_tanggal) );
+			$prepare = Handler::PREPARE( ABSEN::getAbsen, array('kelas'=>$kelas,'absen_tanggal'=>$absen_tanggal) );
 
 			if($prepare)
 			{
 
-				$result = Handler::fetchAssoc($prepare)[0];
+
+
+				$result = Handler::fetchAssoc($prepare);
+
+				$result = !empty($result) ? $result : Handler::HandlerError( 'Empty!' );
 
 				$re['res'] = true;
-				
-				$re['username'] = $result['username'];
-				$re['name']= $result['name'];
-				$re['user_img'] = $result['user_img'];
-				$re['grade'] = $result['grade'];
+				for($i = 0; $i < count($result); $i++)
+				{
+					
+					$re['nis'] = $result[$i]['NIS'];
+					$re['nama'] = $result[$i]['nama'];
+					$re['user_img'] = $result[$i]['user_img'];
+					$re['kelas'] = $result[$i]['kelas'];
 
-				$re['status'] = $result['status'];
-				$re['absen_tanggal'] = $result['absen_tanggal'];
-				$re['absen_jam'] = $result['absen_jam'];
-				$re['absen_keterangan'] = $result['absen_keterangan'];
+					$re['absen_status'] = $result[$i]['absen_status'];
+					$re['absen_tanggal'] = $result[$i]['absen_tanggal'];
+					$re['absen_jam'] = $result[$i]['absen_jam'];
+					$re['absen_keterangan'] = $result[$i]['absen_keterangan'];
 
-				$re['tanggal'] = $result['tanggal'];
-				$re['jam'] = $result['jam'];
-				$re['filesize'] = $result['filesize'];
-				$re['device'] = $result['device'];
-				$re['path'] = $result['path'];
+					$re['tanggal'] = $result[$i]['tanggal'];
+					$re['jam'] = $result[$i]['jam'];
+					$re['filesize'] = $result[$i]['filesize'];
+					$re['device'] = $result[$i]['device'];
+					$re['path'] = $result[$i]['path'];
+				}
 
 
 			}else
 			{
 				$re['res'] = false;
-				$re['msg'] = 'Kueri error';
+				$re['msg'] = 'Query error';
 			}
 
 			array_push(self::$response['GetAbsen'], $re);

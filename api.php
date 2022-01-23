@@ -19,7 +19,7 @@
 
 	function get()
 	{
-		getData['request'] == 'myprofile' ? USER::MyProfile( getData ) : ( getData['request'] == 'getabsen' ? ABSEN::GetAbsen( getData ));
+		getData['request'] == 'myprofile' ? USER::MyProfile( getData ) : ( getData['request'] == 'getabsen' ? ABSEN::GetAbsen( getData ) : null);
 	}
 
 	function post()

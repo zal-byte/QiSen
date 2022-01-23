@@ -32,7 +32,7 @@
 		public static function validateError( $name )
 		{
 			$err[self::$context] = array();
-			$re['status'] = false;
+			$re['res'] = false;
 			$re['msg'] = "Missing '" . $name ."'";
 			array_push($err[self::$context], $re);
 			self::print($err);
@@ -41,10 +41,10 @@
 		public static function HandlerError( $msg )
 		{
 			$err[self::$context] = array();
-			$re['status'] = false;
+			$re['res'] = false;
 			$re['msg'] = $msg;
-			array_push($arr[self::$context], $re);
-			self::print($arr);
+			array_push($err[self::$context], $re);
+			self::print($err);
 			die();
 		}
 		public static function print( $data )
