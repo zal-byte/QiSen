@@ -8,24 +8,23 @@
 	Handler::getInstance();
 	USER::getInstance();
 	ABSEN::getInstance();
+	Handler::$context = 'API';
 
-	isset($_SERVER['REQUEST_METHOD']) ? define('METHOD', $_SERVER['REQUEST_METHOD']) : die("Error");
+	!empty($_SERVER['REQUEST_METHOD']) ? ( $_SERVER['REQUEST_METHOD'] == 'POST' ? post($_POST) : ($_SERVER['REQUEST_METHOD'] == 'GET' ? get($_GET) : die("request_method error") ) ) : die("Error");
 
-	METHOD == 'GET' ? define('getData', $_GET) : (METHOD == 'POST' ? define('postData', $_POST) : die("Error"));
 
-	
-	METHOD == 'GET' ? ( isset(getData['request']) ? get() : die("Missing 'request' parameter") ) : null;
-	METHOD == 'POST' ? ( isset(postData['request']) ? post() : die("Missing 'request' parameter") ) : null;
-
-	function get()
+	function post( $post )
 	{
-		getData['request'] == 'myprofile' ? USER::MyProfile( getData ) : ( getData['request'] == 'getabsen' ? ABSEN::GetAbsen( getData ) : null);
+		$request = Handler::VALIDATE( $post, 'request' );
+		$request == 'guruLogin' ? USER::guruLogin( $post ) : null;
 	}
 
-	function post()
+	function get( $get )
 	{
-		postData['request'] == 'login' ? USER::UserLogin(postData) : ( postData['request'] == 'adduser' ? USER::addUser( postData ) : null );	
-	}
+		$request = Handler::VALIDATE( $get, 'request' );
 
+
+
+	}
 
 ?>

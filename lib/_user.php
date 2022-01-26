@@ -1,123 +1,138 @@
 <?php
-	require_once '_interface.php';
-	require_once '_handler.php';
 
+	require_once '_con.php';
+	require_once '_handler.php';
+	require_once '_pub_interface.php';
 
 	class USER implements query{
-		private static $response = null;
 		private static $instance = null;
-		public static function getInstance(){
+		private static $response = null;
+
+		public static function getInstance()
+		{
 			if(self::$instance == null)
 			{
 				self::$instance = new USER();
 			}
 			return self::$instance;
+		}
+		private static $con = null;
+		public function __construct()
+		{
+			self::$con = self::$con == null ? self::$con = Connection::getConnection() : self::$con;
+		}
+
+
+		//Admin and teacher only
+		public static function guruLogin( $data )
+		{
+			self::$response['guruLogin'] = array();
+
+			Handler::$context = 'guruLogin';
+
+			$username = Handler::VALIDATE( $data, 'username' );
+			$password = Handler::VALIDATE( $data, 'password' );
+
+			$prepare = Handler::PREPARE( USER::guruLogin, array('GUsername'=>$username));
+
+			if( $prepare )
+			{
+			
+				$data = Handler::fetchAssoc( $prepare );
+				empty($data) ? Handler::HandlerError( 'no_data' ) : null;
+				$data = $data[0];
+				
+				if( $data['GPassword'] == $password )
+				{
+					$re['res'] = true;
+					$re['GNIK'] = $data['GNIK'];
+					$re['GUsername'] = $data['GUsername'];
+					$re['GNama'] = $data['GNama'];
+					$re['GAlamat'] = $data['GAlamat'];
+					$re['GNo_hp'] = $data['GNo_hp'];
+					$re['GKelas'] = $data['GKelas'];
+					$re['GFoto'] = $data['GFoto'];
+
+				}else
+				{
+					Handler::HandlerError( 'Invalid password' );
+				}
+
+			}else
+			{
+				Handler::HandlerError( 'Something went wrong' );
+			}
+
+			array_push(self::$response['guruLogin'], $re);
+			Handler::print(self::$response);
 
 		}
 
-		public static function MyProfile( $data )
+		public static function adminLogin( $data )
 		{
-			Handler::$context = 'MyProfile';
+			Handler::$context = 'adminLogin';
+			self::$response['adminLogin'] = array();
 
-		}
+			$username = Handler::VALIDATE( $data, 'username' );
+			$password = Handler::VALIDATE( $data, 'password' );
+
+			$prepare = Handler::PREPARE( USER::adminLogin, array('AUsername'=>$username));
 
 
-
-		private static function CheckUser( $username )
-		{
-			$prepare = Handler::PREPARE( USER::getPengguna, array('username'=>$username));
 			if($prepare)
 			{
 				$data = Handler::fetchAssoc( $prepare );
-				if( count($data) > 0)
+				empty($data) ? Handler::HandlerError( 'no_data' ) : null;
+
+				$data = $data[0];
+
+				if($data['APassword'] == $password )
 				{
-					return false;
-				}else
-				{
-					return true;
-				}
-			}else
-			{
-				Handler::HandlerError('Kueri error');
-			}
-		}
+					$re['res'] = true;
+					$re['AUsername'] = $data['AUsername'];
+					$re['ANama'] = $data['ANama'];
+					$re['AAlamat'] = $data['AAlamat'];
+					$re['ANIK'] = $data['ANIK'];
 
-		public static function AddUser( $data )
-		{
-			self::$response['AddUser'] = array();
-			Handler::$context = 'AddUser';
-
-			$username = Handler::VALIDATE( $data ,'username');
-			$password = Handler::VALIDATE( $data, 'password');
-			$name = Handler::VALIDATE( $data, 'name');
-			$grade = Handler::VALIDATE( $data, 'grade');
-			$user_img = 'img/user/default.jpg';
-
-			$user_input = Handler::VALIDATE( $data, 'user_input');
-			
-
-			if( self::CheckUser( $username) != false )
-			{
-				$prepare = Handler::PREPARE( USER::addUser, array('username'=>$username,'password'=>$password,'name'=>$name,'grade'=>$grade,'user_img'=>$user_img));
-				if($prepare)
-				{
-					$re['status'] = true;
-					$re['msg'] = 'Menambahkan pengguna berhasil';
 				}else{
-					$re['status'] = false;
-					$re['msg'] = 'Kueri error';
+					Handler::HandlerError( 'invalid_password' );
 				}
+
 			}else
 			{
-				$re['status'] = false;
-				$re['msg'] = 'Pengguna ini sudah ada';
+				Handler::HandlerError( 'something went wrong' );
 			}
 
-			array_push(self::$response['AddUser'], $re);
-			Handler::print(self::$response);
+
+			array_push(self::$response['adminLogin'], $re);
+			Handler::print( self::$response);
+
 
 		}
 
-		public static function UserLogin( $data )
+		public static function myProfile( $username, $whoami )
 		{
-			Handler::$context = 'UserLogin';
+			$query = $whoami == 'guru' ? USER::infoGuru : ( $whoami == 'admin' ? USER::infoAdmin : null ) : null;
+			$array = $whoami == 'guru' ? array('GUsername'=>$username) : array('AUsername'=>$username);
 
-			$username = Handler::VALIDATE( $data, 'username');
-			$password = Handler::VALIDATE( $data, 'password');
-			self::$response['UserLogin'] = array();
+			self::$response['myProfile'] = array();
 
-			$result = Handler::PREPARE( USER::userLogin, array('username'=>$username) );
-			if($result)
+			Handler::$context = 'myProfile';
+
+			$prepare = Handler::PREPARE(  $query, $array );
+
+			if($prepare)
 			{
-				$response = $result->fetchAll(PDO::FETCH_ASSOC)[0];
-				if( $response['password'] == $password )
-				{
-					//Login berhasil
-					$re['status'] = true;
-					$re['name'] = $response['name'];
-					$re['username'] = $response['username'];
-					$re['password'] = $response['password'];
-					$re['user_img'] = $response['user_img'];
-					$re['grade'] = $response['grade'];
+				$data = Handler::fetchAssoc($prepare);
+				empty($data) ? Handler::HandlerError('no_data') : null;
 
-				}else
-				{
-					$re['status'] = false;
-					$re['msg'] = 'Kata sandi salah';
-			
-
-					//Kata sandi salah
-				}
-			}else
-			{
-				$re['status'] = false;
-				$re['msg'] = 'Kueri error';
+				
 			}
 
-			array_push(self::$response['UserLogin'], $re);
-			Handler::print(self::$response);
 
-		}	
+		}
+
+
 
 	}
 

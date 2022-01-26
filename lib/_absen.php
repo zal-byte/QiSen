@@ -1,7 +1,7 @@
 <?php
 
 	require_once '_handler.php';
-	require_once '_interface.php';
+	require_once '_pub_interface.php';
 
 
 	class ABSEN implements query{
