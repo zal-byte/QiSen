@@ -1,5 +1,7 @@
 <?php
 
+	require_once '_handler.php';
+	Handler::getInstance();
 
 	class CONNECTION{
 		private static $instance = null;
@@ -14,7 +16,13 @@
 		static $con = null;
 		public static function getConnection()
 		{
-			self::$con = new PDO('mysql:host=localhost;dbname=qisen','database','root');
+			Handler::$context = 'connection';
+			try{
+				self::$con = new PDO('mysql:host=localhost;dbname=qisen','database','root');
+			}catch(PDOException $s)
+			{
+				Handler::HandlerError('Connection error');
+			}
 			return self::$con;
 		}
 	}
