@@ -17,83 +17,14 @@
 	function post( $post )
 	{
 		$request = Handler::VALIDATE( $post, 'request' );
-		if($request == 'userLogin')
-		{
-			USER::userLogin($post);
-		}
+		$request == 'guruLogin' ? USER::guruLogin( $post ) : null;
 	}
 
 	function get( $get )
 	{
 		$request = Handler::VALIDATE( $get, 'request' );
 
-		
-		if($request == 'lihatAbsen')
-		{
 
-		}
-		if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
-
-if($request == 'lihatAbsen')
-		{
-
-		}
 
 	}
 
