@@ -49,6 +49,7 @@
 		}
 		public static function print( $data )
 		{
+			header('Content-Type: application/json');
 			echo json_encode($data);
 		}
 		public static function PREPARE( $query, $param = null )
