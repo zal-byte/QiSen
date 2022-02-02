@@ -2,12 +2,12 @@
 
 	interface query{
 		
-		const guruLogin = 'SELECT * FROM guru WHERE NIK=:NIK';
-		const adminLogin = 'SELECT * FROM admin WHERE NIK=:NIK';
-		const siswaLogin = 'SELECT * FROM siswa WHERE NIS =:NIS';
+		const guru = 'SELECT * FROM guru WHERE NIK=:NIK';
+		const admin = 'SELECT * FROM admin WHERE NIK=:NIK';
+		const siswa = 'SELECT * FROM siswa WHERE NIS =:NIS';
 
 
-		const lihatAbsen = 'SELECT * FROM absen WHERE ';
+		const lihatAbsen = '';
 
 	}
 

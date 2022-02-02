@@ -27,7 +27,10 @@
 	{
 		$request = Handler::VALIDATE( $get, 'request' );
 
-
+		if($request=='userProfile')
+		{
+			USER::userProfile( $get );
+		}
 
 	}
 
