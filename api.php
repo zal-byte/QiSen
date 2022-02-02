@@ -17,7 +17,10 @@
 	function post( $post )
 	{
 		$request = Handler::VALIDATE( $post, 'request' );
-		$request == 'guruLogin' ? USER::guruLogin( $post ) : null;
+		if( $request == 'userLogin')
+		{
+			USER::userLogin( $post );
+		}
 	}
 
 	function get( $get )

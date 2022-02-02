@@ -60,7 +60,10 @@
 				$re['alamat'] = $datas['Alamat'];
 				$re['jenis_kelamin'] = $datas['Jenis_kelamin'];
 				$re['agama'] = $datas['Agama'];
-				$data['user'] == 'siswa' ? $re['kelas'] = $data['Kelas'] : null;
+				if($data['user'] == 'siswa')
+				{
+					$re['kelas'] = $datas['Kelas'];
+				}
 				$re['foto'] = $datas['Foto'];
 
 			}else
