@@ -7,7 +7,7 @@
 		const siswa = 'SELECT * FROM siswa WHERE NIS =:NIS';
 
 
-		const lihatAbsen = '';
+		
 
 	}
 
