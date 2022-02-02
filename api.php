@@ -20,6 +20,9 @@
 		if( $request == 'userLogin')
 		{
 			USER::userLogin( $post );
+		}else if($request == 'addAbsen')
+		{
+			ABSEN::tambahAbsen( $post );
 		}
 	}
 
@@ -30,6 +33,9 @@
 		if($request=='userProfile')
 		{
 			USER::userProfile( $get );
+		}else if($request=='lihatAbsen')
+		{
+			ABSEN::lihatAbsen( $get );
 		}
 
 	}
