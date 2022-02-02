@@ -8,7 +8,7 @@
 
 
 		const absenImgUpload = 'INSERT INTO informasi_gambar (`Info_gambar`,`Tanggal_info`,`Jam_info`,`Path`) VALUES (:Info_gambar, :Tanggal_info, :Jam_info, :Path)';
-
+		const test = 'TESTO';
 	}
 
 ?>
