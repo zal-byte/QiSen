@@ -38,6 +38,10 @@
 			$NIK = Handler::VALIDATE( $param, 'NIK');
 			$tanggal = date('Y-m-d');
 			$jam = date('H:m:s');
+
+			$gambar_tanggal = Handler::VALIDATE( $param, 'img_date');
+			$gambar_jam = Handler::VALIDATE( $param , 'img_time');
+
 			$kelas = Handler::VALIDATE ( $param , 'kelas');
 
 			$img_data = Handler::VALIDATE( $param, 'imageData');
@@ -51,7 +55,7 @@
 			{
 				if( self::addToAbsenTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
 				{
-					if( self::addToInformasiGambarTable( $identifier, $tanggal, $jam, $path) != false )
+					if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path) != false )
 					{
 						$re['res'] = true;
 						$re['msg'] = 'Absen berhasil ditambahkan.';
@@ -68,6 +72,33 @@
 			array_push(self::$response['tambahAbsen'], $re);
 			Handler::print( self::$response );
 			
+		}
+
+
+		//Yyyy-mm-dd
+
+		//Important !
+		private static function imgCheck( $img_date, $img_time)
+		{
+			
+			//Tanggal pada server (ASIA/JAKARTA)
+			$server_date = date('Y-m-d');
+
+			if( $img_date < $server_date )
+			{
+				//Tanggal pengambilan gambar kemarin
+				return [false, 'kemarin'];
+			}else{
+				if( $img_date > $server_date )
+				{
+					//Tanggal di hp pengguna error
+					return [false, 'tanggal_pengguna_error'];
+				}else{
+					//Tanggal sama dengan tanggal server
+					return [true, 'lanjut'];
+				}
+			}
+
 		}
 
 		private static function addToInformasiGambarTable( $identifier , $tanggal, $jam, $path )
@@ -89,7 +120,7 @@
 		{
 
 			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_absen'=>$tanggal, 'Jam_absen'=>$jam, 'Kelas_absen'=>$kelas, 'Info_gambar'=>$identifier);
-			$prepare = Handler::PREPARE( ABSEN::tambahInformasiGambar, $data );
+			$prepare = Handler::PREPARE( ABSEN::tambahAbsen, $data );
 			if($prepare)
 			{
 				return true;
