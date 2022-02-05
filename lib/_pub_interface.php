@@ -18,6 +18,7 @@
 	interface dir{
 		const defaultUserImg = 'img/user/default.jpg';
 		const userImg = 'img/user/';
+		const absenPath = 'img/absen/';
 	}
 
 ?>

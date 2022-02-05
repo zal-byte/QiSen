@@ -19,10 +19,14 @@
 		$request = Handler::VALIDATE( $post, 'request' );
 		if( $request == 'userLogin')
 		{
+
 			USER::userLogin( $post );
+
 		}else if($request == 'addAbsen')
 		{
+
 			ABSEN::checkAccess( $post );
+
 		}
 	}
 
@@ -32,13 +36,14 @@
 
 		if($request=='userProfile')
 		{
+
 			USER::userProfile( $get );
+
 		}else if($request=='lihatAbsen')
 		{
-			ABSEN::lihatAbsen( $get );
-		}else if( $request== 'go' ){
-			ABSEN::checkAbsens($get['NIS'], $get['Tanggal_absen']);
 
+			ABSEN::lihatAbsen( $get );
+			
 		}
 
 	}

@@ -51,7 +51,7 @@
 			$identifier = 'img_info_' . uniqid() . "_" . date('Y-m-d');
 			$filename = $identifier . "_img.jpg";
 
-			$path = Absens::userImg . $filename;
+			$path = ABSEN::absenPath . $filename;
 			if( self::up( $filename, $img_data) != false )
 			{
 				if( self::addToAbsensTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
@@ -117,6 +117,8 @@
 			$start_time = "06:00";
 			$final_time = "06:45";
 
+			$server_date = date('Y-m-d');
+
 			if( $img_time < $start_time ){
 				//Belum bisa Absens
 				Handler::HandlerError("Belum bisa Absens");
@@ -124,10 +126,10 @@
 				if( $img_time >= $start_time )
 				{
 					//Bisa Absens
-					if( self::checkAbsens( $NIS ) != false )
+					if( self::checkAbsens( $NIS, $server_date ) != false )
 					{
 						//Siswa belum Absens, bisa Absens;
-						self::tambahAbsens( $data );
+						self::Absens( $data );
 					}else
 					{
 						//Siswa sudah Absens, tidak bisa Absens lagi;
@@ -178,8 +180,8 @@
 		private static function addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas )
 		{
 
-			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_Absens'=>$tanggal, 'Jam_Absens'=>$jam, 'Kelas_Absens'=>$kelas, 'Info_gambar'=>$identifier);
-			$prepare = Handler::PREPARE( ABSEN::tambahAbsens, $data );
+			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_absen'=>$tanggal, 'Jam_absen'=>$jam, 'Kelas_absen'=>$kelas, 'Info_gambar'=>$identifier);
+			$prepare = Handler::PREPARE( ABSEN::tambahAbsen, $data );
 			if($prepare)
 			{
 				return true;
@@ -192,7 +194,7 @@
 		{
 			$d_base64 = base64_decode( $data );
 
-			return file_put_contents( $filename, $d_base64) ? true : false;
+			return file_put_contents( ABSEN::absenPath . $filename, $d_base64) ? true : false;
 		}
 
 	}
