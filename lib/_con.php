@@ -16,10 +16,10 @@
 		static $con = null;
 		public static function getConnection()
 		{
-			self::$con = new PDO('mysql:host=localhost;dbname=qisen','root','');
+			self::$con = new PDO('mysql:host=localhost;dbname=qisen','database','root');
 			Handler::$context = 'connection';
 			try{
-				self::$con = new PDO('mysql:host=localhost;dbname=qisen','root','');
+				self::$con = new PDO('mysql:host=localhost;dbname=qisen','database','root');
 			}catch(PDOException $s)
 			{
 				Handler::HandlerError('Connection error');

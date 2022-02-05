@@ -15,25 +15,25 @@
 		{
 			if( self::$instance == null)
 			{
-				self::$instance = new Absen();
+				self::$instance = new ABSEN();
 			}
 			return self::$instance;
 		}
 
 
-		public static function lihatAbsen( $data )
+		public static function lihatAbsens( $data )
 		{
-			Handler::$context = 'lihatAbsen';
+			Handler::$context = 'lihatAbsens';
 
 			$tanggal = Handler::HandlerError( $data, 'tanggal');
 
 		}
 
-		public static function Absen( $param )
+		public static function Absens( $param )
 		{
 
-			Handler::$context = 'Absen';
-			self::$response['Absen'] = array();
+			Handler::$context = 'Absens';
+			self::$response['Absens'] = array();
 
 			$NIS = Handler::VALIDATE( $param, 'NIS');
 			$NIK = Handler::VALIDATE( $param, 'NIK');
@@ -51,26 +51,26 @@
 			$identifier = 'img_info_' . uniqid() . "_" . date('Y-m-d');
 			$filename = $identifier . "_img.jpg";
 
-			$path = ABSEN::userImg . $filename;
+			$path = Absens::userImg . $filename;
 			if( self::up( $filename, $img_data) != false )
 			{
-				if( self::addToAbsenTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
+				if( self::addToAbsensTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
 				{
 					if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path) != false )
 					{
 						$re['res'] = true;
-						$re['msg'] = 'Absen berhasil ditambahkan.';
+						$re['msg'] = 'Absens berhasil ditambahkan.';
 					}else{
 						Handler::Error('Input data `informasi gambar` error');
 					}
 				}else{
-					Handler::HandlerError('Input data `absen` error');
+					Handler::HandlerError('Input data `Absens` error');
 				}
 			}else{
 				Handler::HandlerError('ImgUpload error');
 			}
 
-			array_push(self::$response['Absen'], $re);
+			array_push(self::$response['Absens'], $re);
 			Handler::print( self::$response );
 			
 		}
@@ -80,16 +80,35 @@
 
 		//Important !
 
-		public static function checkAbsen( $NIS ){
+		public static function checkAbsens( $nis, $tanggal ){
+			$arr = array('NIS'=>$nis, 'Tanggal_absen'=>$tanggal);
 
-			$arr = array("NIS"=>$NIS);
+			$prepare = Handler::PREPARE( ABSEN::checkAbsen, $arr );
+			if( $prepare )
+			{
+
+				if( $prepare->rowCount() > 0 )
+				{
+
+					//Sudah absen
+					return false;
+				
+				}else{
+
+					return true;
+
+				}
+
+			}else{
+				Handler::HandlerError("Couldn't execute the query.");
+			}
 
 		}
 
 		public static function checkAccess( $data )
 		{
 
-			Handler::$context = "Absen";
+			Handler::$context = "Absens";
 
 			$NIS = Handler::VALIDATE( $data, "NIS");
 			$img_time = Handler::VALIDATE( $data, 'img_time');
@@ -99,18 +118,20 @@
 			$final_time = "06:45";
 
 			if( $img_time < $start_time ){
-				//Belum bisa absen
-				Handler::HandlerError("Belum bisa absen");
+				//Belum bisa Absens
+				Handler::HandlerError("Belum bisa Absens");
 			}else{
 				if( $img_time >= $start_time )
 				{
-					//Bisa absen
-					if( self::checkAbsen( $NIS ) != false )
+					//Bisa Absens
+					if( self::checkAbsens( $NIS ) != false )
 					{
-						//Siswa belum absen, bisa absen;
+						//Siswa belum Absens, bisa Absens;
+						self::tambahAbsens( $data );
 					}else
 					{
-						//Siswa sudah absen, tidak bisa absen lagi;
+						//Siswa sudah Absens, tidak bisa Absens lagi;
+						Handler::HandlerError("Kamu sudah Absen");
 					}
 				}else{
 					if( $img_time > $final_time )
@@ -154,11 +175,11 @@
 			}
 		}
 
-		private static function addToAbsenTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas )
+		private static function addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas )
 		{
 
-			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_absen'=>$tanggal, 'Jam_absen'=>$jam, 'Kelas_absen'=>$kelas, 'Info_gambar'=>$identifier);
-			$prepare = Handler::PREPARE( ABSEN::tambahAbsen, $data );
+			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_Absens'=>$tanggal, 'Jam_Absens'=>$jam, 'Kelas_Absens'=>$kelas, 'Info_gambar'=>$identifier);
+			$prepare = Handler::PREPARE( ABSEN::tambahAbsens, $data );
 			if($prepare)
 			{
 				return true;

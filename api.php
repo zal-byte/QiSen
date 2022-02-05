@@ -36,6 +36,9 @@
 		}else if($request=='lihatAbsen')
 		{
 			ABSEN::lihatAbsen( $get );
+		}else if( $request== 'go' ){
+			ABSEN::checkAbsens($get['NIS'], $get['Tanggal_absen']);
+
 		}
 
 	}
