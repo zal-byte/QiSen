@@ -79,10 +79,21 @@
 		//Yyyy-mm-dd
 
 		//Important !
+
+		public static function checkAbsen( $NIS ){
+
+			$arr = array("NIS"=>$NIS);
+
+		}
+
 		public static function checkAccess( $data )
 		{
 
 			Handler::$context = "Absen";
+
+			$NIS = Handler::VALIDATE( $data, "NIS");
+			$img_time = Handler::VALIDATE( $data, 'img_time');
+			$img_date = Handler::VALIDATE( $data, 'img_date');
 			
 			$start_time = "06:00";
 			$final_time = "06:45";
@@ -94,7 +105,13 @@
 				if( $img_time >= $start_time )
 				{
 					//Bisa absen
-					self::Absen( $param );
+					if( self::checkAbsen( $NIS ) != false )
+					{
+						//Siswa belum absen, bisa absen;
+					}else
+					{
+						//Siswa sudah absen, tidak bisa absen lagi;
+					}
 				}else{
 					if( $img_time > $final_time )
 					{
@@ -106,7 +123,7 @@
 
 		}
 
-		private static function imgCheck( $img_date, $img_time)
+		private static function imgCheck( $img_date )
 		{
 			
 			//Tanggal pada server (ASIA/JAKARTA)
