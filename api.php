@@ -22,7 +22,7 @@
 			USER::userLogin( $post );
 		}else if($request == 'addAbsen')
 		{
-			ABSEN::tambahAbsen( $post );
+			ABSEN::checkAccess( $post );
 		}
 	}
 

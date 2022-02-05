@@ -20,6 +20,7 @@
 			return self::$instance;
 		}
 
+
 		public static function lihatAbsen( $data )
 		{
 			Handler::$context = 'lihatAbsen';
@@ -28,11 +29,11 @@
 
 		}
 
-		public static function tambahAbsen( $param )
+		public static function Absen( $param )
 		{
 
-			Handler::$context = 'tambahAbsen';
-			self::$response['tambahAbsen'] = array();
+			Handler::$context = 'Absen';
+			self::$response['Absen'] = array();
 
 			$NIS = Handler::VALIDATE( $param, 'NIS');
 			$NIK = Handler::VALIDATE( $param, 'NIK');
@@ -69,7 +70,7 @@
 				Handler::HandlerError('ImgUpload error');
 			}
 
-			array_push(self::$response['tambahAbsen'], $re);
+			array_push(self::$response['Absen'], $re);
 			Handler::print( self::$response );
 			
 		}
@@ -78,6 +79,33 @@
 		//Yyyy-mm-dd
 
 		//Important !
+		public static function checkAccess( $data )
+		{
+
+			Handler::$context = "Absen";
+			
+			$start_time = "06:00";
+			$final_time = "06:45";
+
+			if( $img_time < $start_time ){
+				//Belum bisa absen
+				Handler::HandlerError("Belum bisa absen");
+			}else{
+				if( $img_time >= $start_time )
+				{
+					//Bisa absen
+					self::Absen( $param );
+				}else{
+					if( $img_time > $final_time )
+					{
+						//telat
+						Handler::HandlerError("Kamu telat");
+					}
+				}
+			}
+
+		}
+
 		private static function imgCheck( $img_date, $img_time)
 		{
 			
@@ -86,17 +114,10 @@
 
 			if( $img_date < $server_date )
 			{
-				//Tanggal pengambilan gambar kemarin
-				return [false, 'kemarin'];
+				//Gambar kemarin
+				return false;
 			}else{
-				if( $img_date > $server_date )
-				{
-					//Tanggal di hp pengguna error
-					return [false, 'tanggal_pengguna_error'];
-				}else{
-					//Tanggal sama dengan tanggal server
-					return [true, 'lanjut'];
-				}
+				return true;
 			}
 
 		}
