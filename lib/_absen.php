@@ -21,11 +21,61 @@
 		}
 
 
-		public static function lihatAbsens( $data )
+		public static function getAbsen( $data )
 		{
-			Handler::$context = 'lihatAbsens';
+			Handler::$context = 'getAbsen';
+			self::$response[Handler::$context] = array();
 
 			$tanggal = Handler::HandlerError( $data, 'tanggal');
+			$kelas = Handler::HandlerError($data, 'kelas');
+
+			$nik = Handler::HandlerError($data, 'nik');
+
+			$param = array("NIK"=>$nik, "tanggal"=>$tanggal, "absen"=>$kelas);
+
+			$prepare = Handler::PREPARE( ABSEN::getAbsen, $param );
+			if( $prepare )
+			{
+				
+				$datas = Handler::fetchAssoc( $prepare )[0];
+				
+				!empty($datas) ? null : Handler::HandlerError("no_data");
+
+				$re['res'] = true;
+
+				$re['SiswaNIS'] = $datas['SiswaNIS'];
+				$re['SiswaNama'] = $datas['SiswaNama'];
+				$re['SiswaTanggal_lahir'] = $datas['SiswaTanggal_lahir'];
+				$re['SiswaTempat_lahir'] = $datas['SiswaTempat_lahir'];
+				$re['SiswaAlamat'] = $datas['SiswaAlamat'];
+				$re['SiswaJenis_kelamin'] = $datas['SiswaJenis_kelamin'];
+				$re['SiswaAgama'] = $datas['SiswaAgama'];
+				$re['SiswaKelas'] = $datas['SiswaKelas'];
+				$re['SiswaFoto'] = $datas['SiswaFoto'];
+
+				$re['GuruNIK'] = $datas['GuruNIK'];
+				$re['GuruNama'] = $datas['GuruNama'];
+				$re['GuruTanggal_lahir'] = $datas['GuruTanggal_lahir'];
+				$re['GuruTempat_lahir'] = $datas['GuruTempat_lahir'];
+				$re['GuruAlamat'] = $datas['GuruAlamat'];
+				$re['GuruJenis_kelamin'] = $datas['GuruJenis_kelamin'];
+				$re['GuruAgama'] = $datas['GuruAgama'];
+				$re['GuruFoto'] = $datas['GuruFoto'];
+
+				$re['AbsenNIS'] = $datas['AbsenNIS'];
+				$re['AbsenNIK'] = $datas['AbsenNIK'];
+				$re['Tanggal_absen'] = $datas['Tanggal_absen'];
+				$re['Kelas_absen'] = $datas['Kelas_absen'];
+				
+				$re['Info_gambar'] = $datas['Info_gambar'];
+
+
+			}else{	
+				Handler::HandlerError("Couldn't execute the query");
+			}
+
+			array_push(self::$response[Handler::$context], $re);
+			Handler::print( self::$response );
 
 		}
 

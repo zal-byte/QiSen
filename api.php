@@ -39,10 +39,10 @@
 
 			USER::userProfile( $get );
 
-		}else if($request=='lihatAbsen')
+		}else if($request=='getAbsen')
 		{
 
-			ABSEN::lihatAbsen( $get );
+			ABSEN::getAbsen( $get );
 			
 		}
 
