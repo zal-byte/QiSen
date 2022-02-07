@@ -4,7 +4,6 @@
 	require_once 'lib/_handler.php';
 	require_once 'lib/_user.php';
 	require_once 'lib/_absen.php';
-	require_once 'lib/_siswa.php';
 
 	Handler::getInstance();
 	USER::getInstance();
@@ -37,13 +36,13 @@
 
 		}else if( $request == 'deleteSiswa' )
 		{
-			SISWA::deleteSiswa( $post );
+			USER::deleteSiswa( $post );
 		}else if( $request == 'addSiswa' )
 		{
-			SISWA::addSiswa( $post );
+			USER::addSiswa( $post );
 		}else if( $request == 'editSiswa' )
 		{
-			SISWA::editSiswa( $post );
+			USER::editSiswa( $post );
 		}
 
 	}
@@ -64,7 +63,7 @@
 			
 		}else if( $request=='getSiswa')
 		{
-			SISWA::getSiswa( $get );
+			USER::getSiswa( $get );
 		}
 
 	}
