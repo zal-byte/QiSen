@@ -62,6 +62,9 @@
 
 			ABSEN::getAbsen( $get );
 			
+		}else if( $request=='getSiswa')
+		{
+			SISWA::getSiswa( $get );
 		}
 
 	}
