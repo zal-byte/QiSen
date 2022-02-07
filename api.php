@@ -24,6 +24,7 @@
 
 		}else if($request == 'addAbsen')
 		{
+			
 			/*
 			Parameter
 			- NIS ( 10 digit )
@@ -32,6 +33,7 @@
 			- img_time ( H:m:s )
 			- imageData ( base64 )
 			*/
+
 			ABSEN::checkAccess( $post );
 
 		}else if( $request == 'deleteSiswa' )
@@ -43,6 +45,12 @@
 		}else if( $request == 'editSiswa' )
 		{
 			USER::editSiswa( $post );
+		}
+
+
+		else if ($request=='addGuru')
+		{
+			USER::addGuru( $post );
 		}
 
 	}

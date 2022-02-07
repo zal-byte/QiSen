@@ -21,6 +21,9 @@
 		const addSiswa = 'INSERT INTO siswa (`NIS`,`Nama`,`Tanggal_lahir`,`Tempat_lahir`,`Alamat`,`Jenis_kelamin`,`Agama`,`Kelas`,`Foto`,`Password`) VALUES (:NIS, :Nama, :Tanggal_lahir, :Tempat_lahir, :Alamat, :Jenis_kelamin, :Agama, :Kelas, :Foto, :Password)';
 	
 		const editSiswa = 'UPDATE siswa SET `NIS`=:NIS, `Nama`=:Nama,`Tanggal_lahir`=:Tanggal_lahir, `Tempat_lahir`=:Tempat_lahir, `Alamat`=:Alamat, `Jenis_kelamin`=:Jenis_kelamin, `Agama`=:Agama, `Kelas`=:Kelas, `Foto`=:Foto, `Password`=:Password WHERE `NIS`=:NIS';
+	
+	
+		const addGuru = 'INSERT INTO guru (`NIK`,`Nama`,`Tanggal_lahir`,`Tempat_lahir`,`Alamat`,`Jenis_kelamin`,`Agama`,`Foto`,`Password`) VALUES (:NIK, :Nama, :Tanggal_lahir, :Tempat_lahir, :Alamat, :Jenis_kelamin, :Agama, :Foto, :Password)';
 	}
 
 	interface dir{
