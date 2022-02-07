@@ -197,6 +197,11 @@
 			return file_put_contents( ABSEN::absenPath . $filename, $d_base64) ? true : false;
 		}
 
+		public static function getAbsen( $kelas, $tanggal )
+		{
+
+		}
+
 	}
 
 
