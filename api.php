@@ -38,6 +38,9 @@
 		}else if( $request == 'deleteSiswa' )
 		{
 			SISWA::deleteSiswa( $post );
+		}else if( $request == 'addSiswa' )
+		{
+			SISWA::addSiswa( $post );
 		}
 
 	}

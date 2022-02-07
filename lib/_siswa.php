@@ -87,7 +87,7 @@
                 }
 
             }else{
-                Handler::HandlerError( "Couldn't execute the query");
+                Handler::HandlerError( "Couldn't execute the query..");
             }
 
         }
@@ -104,6 +104,7 @@
             $tempat_lahir = Handler::VALIDATE( $post, "tempat_lahir");
             $alamat = Handler::VALIDATE( $post, "alamat");
             $jenis_kelamin = Handler::VALIDATE( $post, "jenis_kelamin");
+            $kelas = Handler::VALIDATE( $post, 'kelas');
             $agama = Handler::VALIDATE( $post, "agama");
             $foto = Handler::VALIDATE( $post, "foto");
             $password = Handler::VALIDATE($post, "password");
@@ -115,23 +116,32 @@
             "Alamat"=>$alamat,
             "Jenis_kelamin"=>$jenis_kelamin,
             "Agama"=>$agama,
+            "Kelas"=>$kelas,
             "Foto"=>$foto,
-            "Password"=>$password);
-
-            $prepare = Handler::PREPARE( SISWA::addSiswa, $param );
-
-            if( $prepare )
-            {
-
-                $re["res"] = true;
-                $re['msg'] = 'Siswa berhasil ditambahkan.';
+            "Password"=>md5($password));
 
 
+            if(self::isHere( $NIS ) == false)
+            { 
+                $prepare = Handler::PREPARE( SISWA::addSiswa, $param );
+
+                if( $prepare )
+                {
+
+                    $re["res"] = true;
+                    $re['msg'] = 'Siswa berhasil ditambahkan.';
+
+
+                }else{
+                    Handler::HandlerError("Couldn't execute the query");
+                }
             }else{
-                Handler::HandlerError("Couldn't execute the query");
+                Handler::HandlerError("Siswa sudah ada");
             }
 
-            array_push(self::$resonse[Handler::$context] , $re);
+
+
+            array_push(self::$response[Handler::$context] , $re);
             Handler::print( self::$response );
         }
 
