@@ -63,7 +63,9 @@
 			
 		}else if( $request=='getSiswa')
 		{
+
 			USER::getSiswa( $get );
+		
 		}
 
 	}

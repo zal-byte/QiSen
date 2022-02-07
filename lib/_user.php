@@ -26,11 +26,11 @@
 
 		public static function userLogin( $data )
 		{
-			$context__ = $data['user'] == 'guru' ? 'guru' : ($data['user'] == 'admin' ? 'adminLogin' : ($data['user'] == 'siswa' ? 'siswa' : Handler::HandlerError('Invalid `user` parameter.')));
+			$context__ = $data['user'] == 'guru' ? 'guru' : ($data['user'] == 'admin' ? 'adminLogin' : ($data['user'] == 'USER' ? 'USER' : Handler::HandlerError('Invalid `user` parameter.')));
 
 			Handler::$context = $context__;
 
-			$data['user'] == 'siswa' ? Handler::VALIDATE( $data, 'nis') : ($data['user'] == 'guru' || $data['user'] == 'admin' ? Handler::VALIDATE( $data, 'nik') : Handler::HandlerError("Invalid `user` parameter."));
+			$data['user'] == 'USER' ? Handler::VALIDATE( $data, 'nis') : ($data['user'] == 'guru' || $data['user'] == 'admin' ? Handler::VALIDATE( $data, 'nik') : Handler::HandlerError("Invalid `user` parameter."));
 
 
 			self::$response[$context__] = array();
@@ -38,9 +38,9 @@
 			$identifier = $data['user'] == 'guru' || $data['user'] == 'admin' ? $data['nik'] : $data['nis']; 
 			$password = Handler::VALIDATE( $data, 'password');
 
-			$query = $data['user'] == 'guru' ? USER::guru : ($data['user'] == 'admin' ? USER::adminLogin : ($data['user'] == 'siswa' ? USER::siswa : Handler::HandlerError('Invalid `user` parameter.')));
+			$query = $data['user'] == 'guru' ? USER::guru : ($data['user'] == 'admin' ? USER::adminLogin : ($data['user'] == 'USER' ? USER::USER : Handler::HandlerError('Invalid `user` parameter.')));
 
-			$param = $data['user'] == 'guru' || $data['user'] == 'admin' ? array('NIK'=>$identifier) : ($data['user'] == 'siswa' ? array('NIS'=>$identifier) : Handler::HandlerError('Invalid `user` parameter.'));
+			$param = $data['user'] == 'guru' || $data['user'] == 'admin' ? array('NIK'=>$identifier) : ($data['user'] == 'USER' ? array('NIS'=>$identifier) : Handler::HandlerError('Invalid `user` parameter.'));
 
 			$prepare = Handler::PREPARE( $query , $param);
 			if($prepare)
@@ -60,7 +60,7 @@
 				$re['alamat'] = $datas['Alamat'];
 				$re['jenis_kelamin'] = $datas['Jenis_kelamin'];
 				$re['agama'] = $datas['Agama'];
-				if($data['user'] == 'siswa')
+				if($data['user'] == 'USER')
 				{
 					$re['kelas'] = $datas['Kelas'];
 				}
@@ -82,16 +82,16 @@
 
 
 			$user_context__ = Handler::VALIDATE( $param, 'user');
-			Handler::$context = $user_context__ == 'siswa' ? 'siswa' : ($user_context__ == 'guru' ? 'guru' : ($user_context__ =='admin' ? 'admin' : Handler::HandlerError('Invalid `user` parameter.')));
+			Handler::$context = $user_context__ == 'USER' ? 'USER' : ($user_context__ == 'guru' ? 'guru' : ($user_context__ =='admin' ? 'admin' : Handler::HandlerError('Invalid `user` parameter.')));
 
 			self::$response[$user_context__] = array();
 			
 
-			$identifier = $user_context__ == 'siswa' ? Handler::VALIDATE( $param, 'NIS' ) : ($user_context__ == 'guru' || $user_context__ == 'admin' ? Handler::VALIDATE( $param, 'NIK') : Handler::HandlerError('something went wroong'));
+			$identifier = $user_context__ == 'USER' ? Handler::VALIDATE( $param, 'NIS' ) : ($user_context__ == 'guru' || $user_context__ == 'admin' ? Handler::VALIDATE( $param, 'NIK') : Handler::HandlerError('something went wroong'));
 
-			$query = $user_context__ == 'siswa' ? USER::siswa : ($user_context__ == 'admin' ? USER::admin : ($user_context__ ? USER::guru : Handler::HandlerError('Invalid `user` parameter.')));
+			$query = $user_context__ == 'USER' ? USER::USER : ($user_context__ == 'admin' ? USER::admin : ($user_context__ ? USER::guru : Handler::HandlerError('Invalid `user` parameter.')));
 
-			$parameter = $user_context__ == 'siswa' ? array('NIS'=>$identifier) : ($user_context__=='guru' || $user_context__ == 'admin' ? array('NIK'=>$identifier) : Handler::HandlerError("Invalid `user` parameter."));
+			$parameter = $user_context__ == 'USER' ? array('NIS'=>$identifier) : ($user_context__=='guru' || $user_context__ == 'admin' ? array('NIK'=>$identifier) : Handler::HandlerError("Invalid `user` parameter."));
 
 			$prepare = Handler::PREPARE( $query, $parameter );
 			if( $prepare )
@@ -101,7 +101,7 @@
 				!empty($data) ? null : Handler::HandlerError('no_data');
 
 				$re['res'] = true;
-				if( $user_context__ == 'siswa')
+				if( $user_context__ == 'USER')
 				{
 					$re['NIS'] = $data['NIS'];
 				}else if($user_context__ == 'guru' || $user_context__ =='admin')
@@ -114,7 +114,7 @@
 				$re['alamat'] = $data['Alamat'];
 				$re['jenis_kelamin'] = $data['Jenis_kelamin'];
 
-				if( $user_context__ == 'siswa' )
+				if( $user_context__ == 'USER' )
 				{
 					$re['kelas'] = $data['Kelas'];
 				}
@@ -144,9 +144,9 @@
 
             $param = array("NIS"=>$NIS);
 
-            self::isHere( $NIS ) != false ? null : Handler::HandlerError("Siswa tidak ada");
+            self::isHere( $NIS ) != false ? null : Handler::HandlerError("USER tidak ada");
 
-            $prepare = Handler::PREPARE( SISWA::deleteSiswaData , $param );
+            $prepare = Handler::PREPARE( USER::deleteSiswaData , $param );
 
 
             if( self::deleteSiswaAbsen( $NIS ) )
@@ -176,7 +176,7 @@
         private static function deleteSiswaAbsen( $NIS )
         {
 
-            $prepare = Handler::PREPARE( SISWA::deleteAbsenData, array("NIS"=>$NIS));
+            $prepare = Handler::PREPARE( USER::deleteAbsenData, array("NIS"=>$NIS));
 
             if( $prepare )
             {
@@ -188,10 +188,11 @@
 
         }
 
+		//siswa(isHere)
         private static function isHere( $NIS )
         {
 
-            $prepare = Handler::PREPARE( SISWA::siswa, array("NIS"=>$NIS));
+            $prepare = Handler::PREPARE( USER::siswa, array("NIS"=>$NIS));
 
             if( $prepare )
             {
@@ -240,7 +241,7 @@
 
             self::isHere( $NIS ) == false ? Handler::HandlerError("Siswa tidak ada") : null;
             
-            $prepare = Handler::PREPARE( SISWA::editSiswa, $param );
+            $prepare = Handler::PREPARE( USER::editUSER, $param );
 
             if( $prepare )
             {
@@ -266,21 +267,34 @@
             $NIS = Handler::VALIDATE( $get, 'NIS');
 
 
-            $prepare = Handler::PREPARE( SISWA::siswa, array("NIS"=>$NIS));
+            $prepare = Handler::PREPARE( USER::siswa, array("NIS"=>$NIS));
 
             if($prepare){
                 
-                $data = Handler::fetchAssoc( $prepare );
+                $data = Handler::fetchAssoc( $prepare )[0];
                 !empty($data) ? null : Handler::HandlerError("No_data");
-                print_r($data);
 
+				$re['res'] = true;
+				$re['Nama'] = $data['Nama'];
+				$re['Tanggal_lahir'] = $data['Tanggal_lahir'];
+				$re['Tempat_lahir'] = $data['Tempat_lahir'];
+				$re['Alamat'] = $data['Alamat'];
+				$re['Jenis_kelamin'] = $data['Jenis_kelamin'];
+				$re['Agama'] = $data['Agama'];
+				$re['Kelas'] = $data['Kelas'];
+				$re['Foto'] = $data['Foto'];
+				$re['Password'] = $data['Password'];
+				
             }else{
-
+				Handler::HandlerError("Couldn't execute the query...");
             }
+
+			array_push(self::$response[Handler::$context], $re);
+			Handler::print( self::$response );
 
         }
 
-        public static function addSiswa( $post )
+        public static function addSsiwa( $post )
         {
             Handler::$context = 'addSiswa';
 
@@ -311,7 +325,7 @@
 
             if(self::isHere( $NIS ) == false)
             { 
-                $prepare = Handler::PREPARE( SISWA::addSiswa, $param );
+                $prepare = Handler::PREPARE( USER::addSiswa, $param );
 
                 if( $prepare )
                 {
