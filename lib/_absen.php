@@ -26,12 +26,12 @@
 			Handler::$context = 'getAbsen';
 			self::$response[Handler::$context] = array();
 
-			$tanggal = Handler::HandlerError( $data, 'tanggal');
-			$kelas = Handler::HandlerError($data, 'kelas');
+			$tanggal = Handler::VALIDATE( $data, 'tanggal');
+			$kelas = Handler::VALIDATE($data, 'kelas');
 
-			$nik = Handler::HandlerError($data, 'nik');
+			$nik = Handler::VALIDATE($data, 'nik');
 
-			$param = array("NIK"=>$nik, "tanggal"=>$tanggal, "absen"=>$kelas);
+			$param = array("NIK"=>$nik, "Tanggal_absen"=>$tanggal, "Kelas_absen"=>$kelas);
 
 			$prepare = Handler::PREPARE( ABSEN::getAbsen, $param );
 			if( $prepare )
