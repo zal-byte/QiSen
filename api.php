@@ -41,6 +41,9 @@
 		}else if( $request == 'addSiswa' )
 		{
 			SISWA::addSiswa( $post );
+		}else if( $request == 'editSiswa' )
+		{
+			SISWA::editSiswa( $post );
 		}
 
 	}

@@ -92,6 +92,52 @@
 
         }
 
+        public static function editSiswa( $post )
+        {
+            Handler::$context = 'editSiswa';
+
+            self::$response[Handler::$context] = array();
+
+            $NIS = Handler::VALIDATE( $post, "NIS");
+            $nama = Handler::VALIDATE( $post, "nama");
+            $tanggal_lahir = Handler::VALIDATE( $post, "tanggal_lahir");
+            $tempat_lahir = Handler::VALIDATE( $post, "tempat_lahir");
+            $alamat = Handler::VALIDATE( $post, "alamat");
+            $jenis_kelamin = Handler::VALIDATE( $post, "jenis_kelamin");
+            $kelas = Handler::VALIDATE( $post, 'kelas');
+            $agama = Handler::VALIDATE( $post, "agama");
+            $foto = Handler::VALIDATE( $post, "foto");
+            $password = Handler::VALIDATE($post, "password");
+
+            $param = array("NIS"=>$NIS,
+            "Nama"=>$nama,
+            "Tanggal_lahir"=>$tanggal_lahir,
+            "Tempat_lahir"=>$tempat_lahir,
+            "Alamat"=>$alamat,
+            "Jenis_kelamin"=>$jenis_kelamin,
+            "Agama"=>$agama,
+            "Kelas"=>$kelas,
+            "Foto"=>$foto,
+            "Password"=>md5($password));
+
+            
+            $prepare = Handler::PREPARE( SISWA::editSiswa, $param );
+
+            if( $prepare )
+            {
+
+                $re['res'] = true;
+                $re['msg'] = 'Data Siswa berhasil diperbarui.';
+
+            }else{
+                Handler::HandlerError("Couldn't execute the query, something went wrong");
+            }
+            
+            array_push(self::$response[Handler::$context], $re);
+            Handler::print( self::$response );
+
+        }
+
         public static function addSiswa( $post )
         {
             Handler::$context = 'addSiswa';
