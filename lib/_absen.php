@@ -69,6 +69,10 @@
 				
 				$re['Info_gambar'] = $datas['Info_gambar'];
 
+				$re['Tanggal_info'] = $datas['Tanggal_info'];
+				$re['Jam_info'] = $datas['Jam_info'];
+				$re['Path'] = $datas['Path'];
+
 
 			}else{	
 				Handler::HandlerError("Couldn't execute the query");
