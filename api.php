@@ -4,6 +4,7 @@
 	require_once 'lib/_handler.php';
 	require_once 'lib/_user.php';
 	require_once 'lib/_absen.php';
+	require_once 'lib/_siswa.php';
 
 	Handler::getInstance();
 	USER::getInstance();
@@ -24,10 +25,21 @@
 
 		}else if($request == 'addAbsen')
 		{
-
+			/*
+			Parameter
+			- NIS ( 10 digit )
+			- NIK ( 16 digit )
+			- img_date ( Y-m-d )
+			- img_time ( H:m:s )
+			- imageData ( base64 )
+			*/
 			ABSEN::checkAccess( $post );
 
+		}else if( $request == 'deleteSiswa' )
+		{
+			SISWA::deleteSiswa( $post );
 		}
+
 	}
 
 	function get( $get )
