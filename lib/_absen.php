@@ -37,8 +37,12 @@
 
 			$NIS = Handler::VALIDATE( $param, 'NIS');
 			$NIK = Handler::VALIDATE( $param, 'NIK');
+			$img_date = Handler::VALIDATE( $param, "img_date");
+			$img_time = Handler::VALIDATE( $param, "img_time");
+
 			$tanggal = date('Y-m-d');
 			$jam = date('H:m:s');
+
 
 			$gambar_tanggal = Handler::VALIDATE( $param, 'img_date');
 			$gambar_jam = Handler::VALIDATE( $param , 'img_time');
@@ -48,27 +52,36 @@
 			$img_data = Handler::VALIDATE( $param, 'imageData');
 
 			
-			$identifier = 'img_info_' . uniqid() . "_" . date('Y-m-d');
+			$identifier = 'img_info_' . uniqid() . "_" . date('Y-m-d') . "_" . str_replace(":", "_", $jam);
 			$filename = $identifier . "_img.jpg";
 
 			$path = ABSEN::absenPath . $filename;
-			if( self::up( $filename, $img_data) != false )
+
+
+			if( self::imgCheck($img_date) != false )
 			{
-				if( self::addToAbsensTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
+				if( self::up( $filename, $img_data) != false )
 				{
-					if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path) != false )
+					if( self::addToAbsensTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
 					{
-						$re['res'] = true;
-						$re['msg'] = 'Absens berhasil ditambahkan.';
+						if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path) != false )
+						{
+							$re['res'] = true;
+							$re['msg'] = 'Absens berhasil ditambahkan.';
+						}else{
+							Handler::Error('Input data `informasi gambar` error');
+						}
 					}else{
-						Handler::Error('Input data `informasi gambar` error');
+						Handler::HandlerError('Input data `Absens` error');
 					}
 				}else{
-					Handler::HandlerError('Input data `Absens` error');
-				}
+					Handler::HandlerError('ImgUpload error');
+				}				
 			}else{
-				Handler::HandlerError('ImgUpload error');
+				Handler::HandlerError("Foto yang kamu upload tidak sesuai dengan tanggal!");
 			}
+
+
 
 			array_push(self::$response['Absens'], $re);
 			Handler::print( self::$response );
@@ -114,8 +127,8 @@
 			$img_time = Handler::VALIDATE( $data, 'img_time');
 			$img_date = Handler::VALIDATE( $data, 'img_date');
 			
-			$start_time = "06:00";
-			$final_time = "06:45";
+			$start_time = "06:00:00";
+			$final_time = "06:45:00";
 
 			$server_date = date('Y-m-d');
 
@@ -125,15 +138,20 @@
 			}else{
 				if( $img_time >= $start_time )
 				{
-					//Bisa Absens
-					if( self::checkAbsens( $NIS, $server_date ) != false )
+					if( $img_time > $final_time )
 					{
-						//Siswa belum Absens, bisa Absens;
-						self::Absens( $data );
-					}else
-					{
-						//Siswa sudah Absens, tidak bisa Absens lagi;
-						Handler::HandlerError("Kamu sudah Absen");
+						Handler::HandlerError("Kamu telat");
+					}else{
+						//Bisa Absens
+						if( self::checkAbsens( $NIS, $server_date ) != false )
+						{
+							//Siswa belum Absens, bisa Absens;
+							self::Absens( $data );
+						}else
+						{
+							//Siswa sudah Absens, tidak bisa Absens lagi;
+							Handler::HandlerError("Kamu sudah Absen");
+						}
 					}
 				}else{
 					if( $img_time > $final_time )
@@ -197,10 +215,6 @@
 			return file_put_contents( ABSEN::absenPath . $filename, $d_base64) ? true : false;
 		}
 
-		public static function getAbsen( $kelas, $tanggal )
-		{
-
-		}
 
 	}
 

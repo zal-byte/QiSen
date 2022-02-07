@@ -12,7 +12,7 @@
 		const tambahInformasiGambar = 'INSERT INTO informasi_gambar (`Info_gambar`,`Tanggal_info`,`Jam_info`,`Path`) VALUES (:Info_gambar, :Tanggal_info, :Jam_info, :Path)';
 
 		const checkAbsen = 'SELECT NIS FROM absen WHERE Tanggal_absen=:Tanggal_absen AND NIS=:NIS';
-		const getAbsen = 'SELECT * FROM absen WHERE '
+		const getAbsen = 'SELECT * FROM absen WHERE ';
 	}
 
 	interface dir{
