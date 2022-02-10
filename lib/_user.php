@@ -88,7 +88,7 @@
 			$user_context__ = Handler::VALIDATE( $param, 'user');
 			Handler::$context = $user_context__ == 'siswa' ? 'siswa' : ($user_context__ == 'guru' ? 'guru' : ($user_context__ =='admin' ? 'admin' : Handler::HandlerError('Invalid `user` parameter.')));
 
-			self::$response[$user_context__] = array();
+			self::$response[Handler::$context] = array();
 			
 
 			$identifier = $user_context__ == 'siswa' ? Handler::VALIDATE( $param, 'NIS' ) : ($user_context__ == 'guru' || $user_context__ == 'admin' ? Handler::VALIDATE( $param, 'NIK') : Handler::HandlerError('something went wroong'));
@@ -114,6 +114,7 @@
 				}
 				$re['nama'] = $data['Nama'];
 				$re['tanggal_lahir'] = $data['Tanggal_lahir'];
+				
 				$re['tempat_lahir'] = $data['Tempat_lahir'];
 				$re['alamat'] = $data['Alamat'];
 				$re['jenis_kelamin'] = $data['Jenis_kelamin'];
