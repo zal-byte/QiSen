@@ -22,6 +22,27 @@
 
 			USER::userLogin( $post );
 
+			/*
+			Parameter
+
+			- user='siswa atau guru'
+			contoh `user=siswa`
+			
+
+			jika - user sama dengan 'siswa' maka
+				- nis='NIS siswa'
+			juga jika - user sama dengan 'guru' maka
+				- nik='NIK guru'
+
+			
+			
+			- password='Kata sandi'
+			- request='userLogin'
+
+
+
+			*/
+
 		}else if($request == 'addAbsen')
 		{
 			

@@ -55,6 +55,9 @@
 					if( $data['user'] == 'guru' || $data['user'] == 'admin' )
 					{
 						$re['nik'] = $datas['NIK'];
+					}else if($data['user'] =='siswa' )
+					{
+						$re['nis'] = $datas['NIS'];
 					}
 					$re['nama'] = $datas['Nama'];
 					$re['tanggal_lahir'] = $datas['Tanggal_lahir'];
