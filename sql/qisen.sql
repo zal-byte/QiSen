@@ -26,6 +26,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `absen`
 --
 
+DROP TABLE IF EXISTS `absen`;
+DROP TABLE IF EXISTS `guru`;
+DROP TABLE IF EXISTS `siswa`;
+DROP TABLE IF EXISTS `informasi_gambar`;
+DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `kurikulum`;
+
 CREATE TABLE `absen` (
   `No_absen` int(11) NOT NULL,
   `NIS` char(10) NOT NULL,
