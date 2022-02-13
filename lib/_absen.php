@@ -20,9 +20,9 @@
 			return self::$instance;
 		}
 
-		public static function getTeacherStudent( $get )
+		public static function myStudent( $get )
 		{
-			Handler::$context = 'getTeacherStudent';
+			Handler::$context = 'myStudent';
 			self::$response[Handler::$context] = array();
 
 
@@ -64,6 +64,29 @@
 			array_push(self::$response[Handler::$context], $re);
 			Handler::print(self::$response);
 
+		}
+
+
+
+		public static function myTeacher( $get )
+		{
+			$walikelas = Handler::VALIDATE( $get ,'walikelas');
+
+
+			$prepare = Handler::PREPARE(ABSEN::myTeacher, array('Walikelas'=>$walikelas));
+
+			if( $prepare) 
+			{
+				if( $prepare->rowCount() > 0 )
+				{
+					$data = Handler::fetchAssoc( $prepare )[0];
+					return $data['NIK'];
+				}else{
+					Handler::HandlerError("no_data");
+				}
+			}else{
+				Handler::HandlerError("Couldnt' execute the query.");
+			}
 		}
 
 		public static function getAbsen( $data )
@@ -161,18 +184,45 @@
 			{
 				if( self::up( $filename, $img_data) != false )
 				{
-					if( self::addToAbsensTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
+
+
+
+
+
+
+
+
+					if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path ) != false )
 					{
-						if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path) != false )
+						if( self::addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
 						{
 							$re['res'] = true;
-							$re['msg'] = 'Absens berhasil ditambahkan.';
+							$re['msg'] = 'Absen berhasil ditambahkan.';
 						}else{
-							Handler::Error('Input data `informasi gambar` error');
+							Handler::HandlerError('Input data `Absens` error');
 						}
 					}else{
-						Handler::HandlerError('Input data `Absens` error');
+						Handler::HandlerError('Input data `informasi gambar` error');
 					}
+
+
+
+					//Unused but no problem
+
+					// if( self::addToAbsensTable($identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
+					// {
+					// 	if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path) != false )
+					// 	{
+					// 		$re['res'] = true;
+					// 		$re['msg'] = 'Absens berhasil ditambahkan.';
+					// 	}else{
+					// 		Handler::Error('Input data `informasi gambar` error');
+					// 	}
+					// }else{
+					// 	Handler::HandlerError('Input data `Absens` error');
+					// }
+
+
 				}else{
 					Handler::HandlerError('ImgUpload error');
 				}				

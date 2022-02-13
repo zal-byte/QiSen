@@ -27,6 +27,7 @@
 		const addGuru = 'INSERT INTO guru (`NIK`,`Nama`,`Tanggal_lahir`,`Tempat_lahir`,`Alamat`,`Jenis_kelamin`,`Agama`,`Foto`,`Password`) VALUES (:NIK, :Nama, :Tanggal_lahir, :Tempat_lahir, :Alamat, :Jenis_kelamin, :Agama, :Foto, :Password)';
 
 		const myStudent = 'SELECT * FROM siswa WHERE Kelas=:Kelas';
+		const myTeacher = 'SELECT * FROM guru WHERE Walikelas=:Walikelas';
 
 	}
 

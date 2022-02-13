@@ -87,11 +87,14 @@
 		
 		}
 
-		else if( $request == 'getTeacherStudent')
+		else if( $request == 'myStudent')
 		{
 
-			ABSEN::getTeacherStudent( $get );
+			ABSEN::myStudent( $get );
 
+		}else if( $request == 'myTeacher')
+		{
+			ABSEN::myTeacher( $get );
 		}
 
 	}
