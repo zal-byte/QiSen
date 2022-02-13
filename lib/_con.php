@@ -14,10 +14,13 @@
 			return self::$instance;
 		}
 		static $con = null;
+		public function __construct()
+		{
+			Handler::$context = 'Connection';
+		}
 		public static function getConnection()
 		{
 			self::$con = new PDO('mysql:host=localhost;dbname=qisen','root','');
-			Handler::$context = 'connection';
 			try{
 				self::$con = new PDO('mysql:host=localhost;dbname=qisen','root','');
 			}catch(PDOException $s)

@@ -1,6 +1,8 @@
 <?php
 
 
+
+	date_default_timezone_set("Asia/Jakarta");
 	require_once 'lib/_handler.php';
 	require_once 'lib/_user.php';
 	require_once 'lib/_absen.php';
@@ -39,10 +41,10 @@
 			/*
 			Parameter
 			- NIS ( 10 digit )
-			- NIK ( 16 digit )
 			- img_date ( Y-m-d )
 			- img_time ( H:m:s )
 			- imageData ( base64 )
+			- kelas 
 			*/
 
 			ABSEN::checkAccess( $post );
@@ -92,9 +94,6 @@
 
 			ABSEN::myStudent( $get );
 
-		}else if( $request == 'myTeacher')
-		{
-			ABSEN::myTeacher( $get );
 		}
 
 	}

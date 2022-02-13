@@ -79,7 +79,7 @@
 			}
 
 			array_push(self::$response[$context__], $re);
-			Handler::print(self::$response);
+			Handler::printt(self::$response);
 
 
 		}
@@ -134,7 +134,7 @@
 			}
 
 			array_push(self::$response[$user_context__], $re);
-			Handler::print( self::$response );
+			Handler::printt( self::$response );
 
 		}
 
@@ -177,7 +177,7 @@
 
 
             array_push(self::$response[Handler::$context], $re);
-            Handler::print( self::$response );
+            Handler::printt( self::$response );
 
         }
 
@@ -278,7 +278,7 @@
 
             
             array_push(self::$response[Handler::$context], $re);
-            Handler::print( self::$response );
+            Handler::printt( self::$response );
 
         }
 
@@ -314,7 +314,7 @@
             }
 
 			array_push(self::$response[Handler::$context], $re);
-			Handler::print( self::$response );
+			Handler::printt( self::$response );
 
         }
 
@@ -370,7 +370,7 @@
 
 
             array_push(self::$response[Handler::$context] , $re);
-            Handler::print( self::$response );
+            Handler::printt( self::$response );
         }
 
 		
@@ -435,7 +435,7 @@
 			}	
 
 			array_push(self::$response[Handler::$context], $re);
-			Handler::print( self::$response );
+			Handler::printt( self::$response );
 
 		}
 

@@ -62,15 +62,14 @@
 
 
 			array_push(self::$response[Handler::$context], $re);
-			Handler::print(self::$response);
+			Handler::printt(self::$response);
 
 		}
 
 
 
-		public static function myTeacher( $get )
+		public static function myTeacher( $walikelas )
 		{
-			$walikelas = Handler::VALIDATE( $get ,'walikelas');
 
 
 			$prepare = Handler::PREPARE(ABSEN::myTeacher, array('Walikelas'=>$walikelas));
@@ -147,7 +146,7 @@
 			}
 
 			array_push(self::$response[Handler::$context], $re);
-			Handler::print( self::$response );
+			Handler::printt( self::$response );
 
 		}
 
@@ -158,19 +157,20 @@
 			self::$response['Absens'] = array();
 
 			$NIS = Handler::VALIDATE( $param, 'NIS');
-			$NIK = Handler::VALIDATE( $param, 'NIK');
+			
 			$img_date = Handler::VALIDATE( $param, "img_date");
 			$img_time = Handler::VALIDATE( $param, "img_time");
 
 			$tanggal = date('Y-m-d');
-			$jam = date('H:m:s');
+			$jam = date('H:i:s');
 
 
 			$gambar_tanggal = Handler::VALIDATE( $param, 'img_date');
 			$gambar_jam = Handler::VALIDATE( $param , 'img_time');
 
 			$kelas = Handler::VALIDATE ( $param , 'kelas');
-
+			$NIK = self::myTeacher($kelas);
+			
 			$img_data = Handler::VALIDATE( $param, 'imageData');
 
 			
@@ -233,7 +233,7 @@
 
 
 			array_push(self::$response['Absens'], $re);
-			Handler::print( self::$response );
+			Handler::printt( self::$response );
 			
 		}
 
