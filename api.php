@@ -87,6 +87,13 @@
 		
 		}
 
+		else if( $request == 'getTeacherStudent')
+		{
+
+			ABSEN::getTeacherStudent( $get );
+
+		}
+
 	}
 
 ?>

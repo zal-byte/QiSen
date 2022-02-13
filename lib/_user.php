@@ -34,7 +34,7 @@
 			$data['user'] == 'siswa' ? Handler::VALIDATE( $data, 'nis') : ($data['user'] == 'guru' || $data['user'] == 'admin' ? Handler::VALIDATE( $data, 'nik') : Handler::HandlerError("Invalid `user` parameter."));
 
 
-			self::$response[$context__] = array();
+			self::$response[Handler::$context] = array();
 
 			$identifier = $data['user'] == 'guru' || $data['user'] == 'admin' ? $data['nik'] : $data['nis']; 
 			$password = Handler::VALIDATE( $data, 'password');

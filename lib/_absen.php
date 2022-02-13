@@ -20,6 +20,51 @@
 			return self::$instance;
 		}
 
+		public static function getTeacherStudent( $get )
+		{
+			Handler::$context = 'getTeacherStudent';
+			self::$response[Handler::$context] = array();
+
+
+			//Walikelas
+			$kelas = Handler::VALIDATE( $get, 'kelas');
+
+
+			$prepare = Handler::PREPARE( ABSEN::myStudent, array("Kelas"=>$kelas));
+
+
+			if($prepare)
+			{
+
+				$data = Handler::fetchAssoc( $prepare )[0];
+
+				!empty($data) ? null : Handler::HandlerError('no_data');
+
+				$re['res'] = true;
+				$re['nis'] = $data['NIS'];
+				$re['nama'] = $data['Nama'];
+				$re['tanggal_lahir'] = $data['Tanggal_lahir'];
+				$re['tempat_lahir'] = $data['Tempat_lahir'];
+				$re['alamat'] = $data['Alamat'];
+				$re['jenis_kelamin'] = $data['Jenis_kelamin'];
+				$re['agama'] = $data['Agama'];
+				$re['foto'] = $data['Foto'];
+				$re['kelas'] = $data['Kelas'];
+				
+				
+
+			}else{
+				Handler::HandlerError("Couldn't execute the query.");
+			}
+
+			//
+
+
+
+			array_push(self::$response[Handler::$context], $re);
+			Handler::print(self::$response);
+
+		}
 
 		public static function getAbsen( $data )
 		{
