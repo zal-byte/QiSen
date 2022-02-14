@@ -76,16 +76,20 @@
 
 			if( $prepare) 
 			{
+				
 				if( $prepare->rowCount() > 0 )
 				{
 					$data = Handler::fetchAssoc( $prepare )[0];
 					return $data['NIK'];
 				}else{
-					Handler::HandlerError("no_data");
+					Handler::HandlerError('guru_not_found');
 				}
+
 			}else{
 				Handler::HandlerError("Couldnt' execute the query.");
 			}
+
+
 		}
 
 		public static function getAbsen( $data )
@@ -186,18 +190,12 @@
 				{
 
 
-
-
-
-
-
-
 					if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path ) != false )
 					{
 						if( self::addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
 						{
 							$re['res'] = true;
-							$re['msg'] = 'Absen berhasil ditambahkan.';
+							$re['msg'] = 'Absen berhasil ditambahkan. ';
 						}else{
 							Handler::HandlerError('Input data `Absens` error');
 						}
@@ -224,6 +222,7 @@
 
 
 				}else{
+					unlink( $path );
 					Handler::HandlerError('ImgUpload error');
 				}				
 			}else{

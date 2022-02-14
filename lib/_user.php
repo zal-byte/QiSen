@@ -39,7 +39,7 @@
 			$identifier = $data['user'] == 'guru' || $data['user'] == 'admin' ? $data['nik'] : $data['nis']; 
 			$password = Handler::VALIDATE( $data, 'password');
 
-			$query = $data['user'] == 'guru' ? USER::guru : ($data['user'] == 'admin' ? USER::adminLogin : ($data['user'] == 'siswa' ? USER::siswa : Handler::HandlerError('Invalid `user` parameter.')));
+			$query = $data['user'] == 'guru' ? USER::guru : ($data['user'] == 'admin' ? USER::admin : ($data['user'] == 'siswa' ? USER::siswa : Handler::HandlerError('Invalid `user` parameter.')));
 
 			$param = $data['user'] == 'guru' || $data['user'] == 'admin' ? array('NIK'=>$identifier) : ($data['user'] == 'siswa' ? array('NIS'=>$identifier) : Handler::HandlerError('Invalid `user` parameter.'));
 			$prepare = Handler::PREPARE( $query , $param);
@@ -52,12 +52,16 @@
 				if( $datas['Password'] == md5($password) )
 				{
 					$re['res'] = true;
-					if( $data['user'] == 'guru' || $data['user'] == 'admin' )
+					if( $data['user'] == 'guru')
 					{
 						$re['nik'] = $datas['NIK'];
+						$re['walikelas'] = $datas['Walikelas'];
 					}else if($data['user'] =='siswa' )
 					{
 						$re['nis'] = $datas['NIS'];
+					}else if( $data['user'] == 'admin')
+					{
+						$re['nik'] = $datas['NIK'];
 					}
 					$re['nama'] = $datas['Nama'];
 					$re['tanggal_lahir'] = $datas['Tanggal_lahir'];
@@ -104,30 +108,38 @@
 			if( $prepare )
 			{
 
-				$data = Handler::fetchAssoc($prepare)[0];
-				!empty($data) ? null : Handler::HandlerError('no_data');
+				if( $prepare->rowCount() > 0 )
+				{
+					$data = Handler::fetchAssoc($prepare)[0];
 
-				$re['res'] = true;
-				if( $user_context__ == 'siswa')
-				{
-					$re['NIS'] = $data['NIS'];
-				}else if($user_context__ == 'guru' || $user_context__ =='admin')
-				{
-					$re['NIK'] = $data['NIK'];
+					$re['res'] = true;
+					if( $user_context__ == 'siswa')
+					{
+						$re['NIS'] = $data['NIS'];
+					}else if($user_context__ == 'guru')
+					{
+						$re['walikelas'] = $data['Walikelas'];
+						$re['NIK'] = $data['NIK'];
+					}
+					$re['nama'] = $data['Nama'];
+					$re['tanggal_lahir'] = $data['Tanggal_lahir'];
+					$re['agama'] = $data['Agama'];
+					$re['tempat_lahir'] = $data['Tempat_lahir'];
+					$re['alamat'] = $data['Alamat'];
+					$re['jenis_kelamin'] = $data['Jenis_kelamin'];
+
+
+					if( $user_context__ == 'siswa' )
+					{
+						$re['kelas'] = $data['Kelas'];
+					}
+					$re['foto'] = $data['Foto'];
+
+				}else{
+					Handler::HandlerError("no_data_");
 				}
-				$re['nama'] = $data['Nama'];
-				$re['tanggal_lahir'] = $data['Tanggal_lahir'];
-				
-				$re['tempat_lahir'] = $data['Tempat_lahir'];
-				$re['alamat'] = $data['Alamat'];
-				$re['jenis_kelamin'] = $data['Jenis_kelamin'];
 
-				if( $user_context__ == 'siswa' )
-				{
-					$re['kelas'] = $data['Kelas'];
-				}
-				$re['foto'] = $data['Foto'];
-
+			
 
 			}else{
 				Handler::HandlerError("Something went wrong");
