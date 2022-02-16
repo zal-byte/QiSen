@@ -36,21 +36,28 @@
 			if($prepare)
 			{
 
-				$data = Handler::fetchAssoc( $prepare )[0];
+				$data = Handler::fetchAssoc( $prepare );
 
 				!empty($data) ? null : Handler::HandlerError('no_data');
 
-				$re['res'] = true;
-				$re['nis'] = $data['NIS'];
-				$re['nama'] = $data['Nama'];
-				$re['tanggal_lahir'] = $data['Tanggal_lahir'];
-				$re['tempat_lahir'] = $data['Tempat_lahir'];
-				$re['alamat'] = $data['Alamat'];
-				$re['jenis_kelamin'] = $data['Jenis_kelamin'];
-				$re['agama'] = $data['Agama'];
-				$re['foto'] = $data['Foto'];
-				$re['kelas'] = $data['Kelas'];
-				
+
+				for( $i = 0; $i < count($data); $i++)
+				{
+					
+					$re['res'] = true;
+					$re['nis'] = $data[$i]['NIS'];
+					$re['nama'] = $data[$i]['Nama'];
+					$re['tanggal_lahir'] = $data[$i]['Tanggal_lahir'];
+					$re['tempat_lahir'] = $data[$i]['Tempat_lahir'];
+					$re['alamat'] = $data[$i]['Alamat'];
+					$re['jenis_kelamin'] = $data[$i]['Jenis_kelamin'];
+					$re['agama'] = $data[$i]['Agama'];
+					$re['foto'] = $data[$i]['Foto'];
+					$re['kelas'] = $data[$i]['Kelas'];
+					array_push(self::$response[Handler::$context], $re);
+
+				}
+
 				
 
 			}else{
@@ -61,12 +68,11 @@
 
 
 
-			array_push(self::$response[Handler::$context], $re);
 			Handler::printt(self::$response);
 
 		}
 
-
+		
 
 		public static function myTeacher( $walikelas )
 		{
@@ -273,6 +279,9 @@
 
 			$NIS = Handler::VALIDATE( $data, "NIS");
 			$img_time = Handler::VALIDATE( $data, 'img_time');
+
+			
+
 			$img_date = Handler::VALIDATE( $data, 'img_date');
 			
 			$start_time = "06:00:00";

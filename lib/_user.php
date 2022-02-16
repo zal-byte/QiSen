@@ -45,10 +45,10 @@
 			$prepare = Handler::PREPARE( $query , $param);
 			if($prepare)
 			{
-				$datas = Handler::fetchAssoc($prepare)[0];
+				$datas = Handler::fetchAssoc($prepare);
 				!empty($datas) ? null : Handler::HandlerError('No_data');
 				 
-
+				$datas = $datas[0];
 				if( $datas['Password'] == md5($password) )
 				{
 					$re['res'] = true;
