@@ -96,6 +96,22 @@
 
 		}
 
+		else if( $request =='myAbsen')
+		{
+			ABSEN::myAbsen( $get );
+		}
+
+		else if( $request == 'cekDisini')
+		{
+			ABSEN::cekDisini( $get );
+		}
+
+		else if ( $request == 'cekDisiniHadir')
+		{
+			ABSEN::cekDisiniHadir( $get );
+		}
+		
+
 	}
 
 ?>

@@ -20,6 +20,138 @@
 			return self::$instance;
 		}
 
+
+		public static function cekDisiniHadir( $get )
+		{
+			Handler::$context = 'cekDisini';
+			self::$response[Handler::$context] = array();
+
+			$tanggal = Handler::VALIDATE( $get, 'tanggal');
+			$kelas = Handler::VALIDATE( $get, 'kelas');
+
+			$status = Handler::VALIDATE( $get, 'status');
+
+			$param = array('Tanggal_absen'=>$tanggal, 'Kelas_absen'=>$kelas, 'Status_absen'=>$status);
+
+			$prepare = Handler::PREPARE( ABSEN::cekDisiniToggle, $param);
+
+			if( $prepare )
+			{
+
+
+				if( $prepare->rowCount() > 0 )
+				{
+
+					$data = Handler::fetchAssoc( $prepare );
+
+					$re['res'] = true;
+					
+					for($i = 0; $i < count($data); $i++)
+					{
+
+						$re['nama'] = $data[$i]['Nama'];
+						$re['status_absen'] = $data[$i]['Status_absen'];
+
+						array_push(self::$response[Handler::$context], $re);
+
+					}
+
+				}else{
+					Handler::HandlerError("Tidak_ada_data");
+				}
+
+			}else{
+				Handler::HandlerError("Gagal mengeksekusi kueri.");
+			}
+
+
+			Handler::printt( self::$response );
+		}
+
+
+		public static function cekDisini( $get )
+		{
+			Handler::$context = 'cekDisini';
+			self::$response[Handler::$context] = array();
+
+
+			$tanggal = Handler::VALIDATE( $get, 'tanggal');
+			$kelas = Handler::VALIDATE( $get, 'kelas');
+
+
+			$param = array("Tanggal_absen"=>$tanggal, "Kelas_absen"=>$kelas);
+			
+			$prepare = Handler::PREPARE( ABSEN::cekDisini, $param);
+
+			if($prepare)
+			{
+
+				if( $prepare->rowCount() > 0 )
+				{
+					$data = Handler::fetchAssoc( $prepare );
+
+					$re['res'] = true;
+					for($i = 0; $i < count($data);$i++)
+					{
+						$re['nama'] = $data[$i]['Nama'];
+						$re['status_absen'] = $data[$i]['Status_absen'];
+						
+
+						array_push(self::$response[Handler::$context], $re);
+					}
+
+				}else{
+					Handler::HandlerError("no_data");
+				}
+
+			}else{
+				Handler::HandlerError("Gagal mengeksekusi kueri.");
+			}
+
+
+			Handler::printt( self::$response );
+		}
+
+		public static function myAbsen( $get )
+		{
+			Handler::$context = 'myAbsen';
+			self::$response[Handler::$context] = array();
+
+
+
+			$nis = Handler::VALIDATE( $get, 'nis');
+
+
+
+			$param = array('NIS'=>$nis);
+			$prepare = Handler::PREPARE( ABSEN::myAbsen, $param);
+			if($prepare)
+			{
+				if( $prepare->rowCount() > 0)
+				{
+					$data = Handler::fetchAssoc( $prepare );
+
+					$re['res'] = true;
+					for($i = 0; $i < count($data);$i++)
+					{
+						$re['nis'] = $data[$i]['NIS'];
+						$re['tanggal_absen'] = $data[$i]['Tanggal_absen'];
+						$re['jam_absen'] = $data[$i]['Jam_absen'];
+						$re['kelas_absen'] = $data[$i]['Kelas_absen'];
+						$re['status_absen'] = $data[$i]['Status_absen'];
+						$re['info_gambar'] = $data[$i]['Info_gambar'];
+
+						array_push(self::$response[Handler::$context], $re);
+					}
+				}else{
+					Handler::HandlerError("Tidak ada data");
+				}
+			}else{
+				Handler::HandlerError("Gagal mengeksekusi kueri");
+			}
+			Handler::printt(self::$response);
+		}
+
 		public static function myStudent( $get )
 		{
 			Handler::$context = 'myStudent';
@@ -198,10 +330,10 @@
 
 					if( self::addToInformasiGambarTable( $identifier, $gambar_tanggal, $gambar_jam, $path ) != false )
 					{
-						if( self::addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas) != false )
+						if( self::addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas, "hadir") != false )
 						{
 							$re['res'] = true;
-							$re['msg'] = 'Absen berhasil ditambahkan. ';
+							$re['msg'] = 'Absen berhasil ditambahkan.';
 						}else{
 							Handler::HandlerError('Input data `Absens` error');
 						}
@@ -280,6 +412,8 @@
 			$NIS = Handler::VALIDATE( $data, "NIS");
 			$img_time = Handler::VALIDATE( $data, 'img_time');
 
+			$kelas = Handler::VALIDATE( $data, 'kelas');
+
 			
 
 			$img_date = Handler::VALIDATE( $data, 'img_date');
@@ -297,7 +431,31 @@
 				{
 					if( $img_time > $final_time )
 					{
-						Handler::HandlerError("Kamu telat");
+											//nis, nik, tanggal_absen, jam_absen, kelas_absen, status_absen, info_gambar
+						$nik = self::myTeacher( $kelas );
+						$jam = date("H:i:s");
+						$tanggal = date("Y-m-d");
+
+						$status = "tidak_hadir";
+						$iden = "tidak_hadir_" . uniqid();
+
+
+						if(self::checkAbsens($NIS, $tanggal) == false)
+						{
+							Handler::HandlerError("kamu telat");
+
+						}else{
+							if(self::addToInformasiGambarTable($iden, $tanggal, $jam, $iden) != false)
+							{
+								if(self::addToAbsensTable($iden, $NIS, $nik, $tanggal, $jam, $kelas, $status) != false)
+								{
+									Handler::HandlerError("kamu telat");
+								}
+							}							
+						}
+						
+
+
 					}else{
 						//Bisa Absens
 						if( self::checkAbsens( $NIS, $server_date ) != false )
@@ -313,8 +471,10 @@
 				}else{
 					if( $img_time > $final_time )
 					{
+
+	
+
 						//telat
-						Handler::HandlerError("Kamu telat");
 					}
 				}
 			}
@@ -352,10 +512,11 @@
 			}
 		}
 
-		private static function addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas )
+		private static function addToAbsensTable( $identifier, $NIS, $NIK, $tanggal, $jam, $kelas, $status_absen )
 		{
 
-			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_absen'=>$tanggal, 'Jam_absen'=>$jam, 'Kelas_absen'=>$kelas, 'Info_gambar'=>$identifier);
+			//nis, nik, tanggal_absen, jam_absen, kelas_absen, status_absen, info_gambar
+			$data = array('NIS'=>$NIS, 'NIK'=>$NIK, 'Tanggal_absen'=>$tanggal, 'Jam_absen'=>$jam, 'Kelas_absen'=>$kelas, "Status_absen"=> $status_absen, 'Info_gambar'=>$identifier);
 			$prepare = Handler::PREPARE( ABSEN::tambahAbsen, $data );
 			if($prepare)
 			{

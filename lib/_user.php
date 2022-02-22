@@ -120,6 +120,9 @@
 					{
 						$re['walikelas'] = $data['Walikelas'];
 						$re['NIK'] = $data['NIK'];
+					}else if($user_context__=='admin')
+					{
+						$re['NIK'] = $data['NIK'];
 					}
 					$re['nama'] = $data['Nama'];
 					$re['tanggal_lahir'] = $data['Tanggal_lahir'];
@@ -270,7 +273,7 @@
             
 			if( self::up( $imageData, $foto ) != false )
 			{
-				$prepare = Handler::PREPARE( USER::editUSER, $param );
+				$prepare = Handler::PREPARE( USER::editSiswa, $param );
 
 				if( $prepare )
 				{
@@ -416,35 +419,52 @@
 			
 			self::$response[Handler::$context] = array();
 
-			$nik = Handler::VALIDATE( $post, 'nik');
+			$nik = Handler::VALIDATE( $post, 'NIK');
 			$nama = Handler::VALIDATE( $post, 'nama');
 			$tanggal_lahir = Handler::VALIDATE( $post, 'tanggal_lahir');
 			$tempat_lahir = Handler::VALIDATE( $post, 'tempat_lahir');
 			$jenis_kelamin = Handler::VALIDATE( $post, 'jenis_kelamin');
 			$alamat = Handler::VALIDATE( $post, 'alamat');
 			$agama = Handler::VALIDATE( $post, 'agama');
-			$foto = Handler::VALIDATE( $post, 'foto');
+
 			$password = Handler::VALIDATE($post, 'password');
 
-			$param = array('NIK'=>$nik, 'Nama'=>$nama, 'Tanggal_lahir'=>$tanggal_lahir,'Tempat_lahir'=>$tempat_lahir, 'Alamat'=>$alamat,'Jenis_kelamin'=>$jenis_kelamin, 'Agama'=>$agama, 'Foto'=>$foto, 'Password'=>md5($password));
+			$imageData = Handler::VALIDATE( $post, 'imageData');
 
+			
 
 
 			self::isGuruHere($nik) == false ? null : Handler::HandlerError("Data guru sudah ada");
 
-			$prepare = Handler::PREPARE( USER::addGuru, $param );
 
-			if( $prepare )
+			// nama_uniqid()_.jpg
+
+			$img_path = USER::userImg . $nama . "_" . uniqid() . ".jpg";
+
+			$foto = $img_path;
+
+			$param = array('NIK'=>$nik, 'Nama'=>$nama, 'Tanggal_lahir'=>$tanggal_lahir,'Tempat_lahir'=>$tempat_lahir, 'Alamat'=>$alamat,'Jenis_kelamin'=>$jenis_kelamin, 'Agama'=>$agama, 'Foto'=>$foto, 'Password'=>md5($password));
+
+			if( self::up($imageData, $img_path) != false )
 			{
 
-				$re['res'] = true;
-				$re['msg'] = 'Data Guru berhasil ditambahkan.';
+				$prepare = Handler::PREPARE( USER::addGuru, $param );
 
+				if( $prepare )
+				{
+
+					$re['res'] = true;
+					$re['msg'] = 'Data Guru berhasil ditambahkan.';
+
+				}else{
+
+					Handler::HandlerError("Couldn't execute the query (addGuru)");
+
+				}	
 			}else{
+				Handler::HandlerError("Gagal mengupload gambar");
+			}
 
-				Handler::HandlerError("Couldn't execute the query (addGuru)");
-
-			}	
 
 			array_push(self::$response[Handler::$context], $re);
 			Handler::printt( self::$response );
