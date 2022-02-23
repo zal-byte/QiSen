@@ -20,6 +20,26 @@
 			return self::$instance;
 		}
 
+		public function __construct()
+		{
+			self::checkDir();
+		}
+
+		private static function checkDir()
+		{
+			$user = "../img/user";
+			$absen = "../img/absen";
+
+			if(!file_exists($user))
+			{	
+				mkdir($user);
+			}
+			if( !file_exists($absen))
+			{
+				mkdir($absen);
+			}
+		}
+
 
 		public static function cekDisiniHadir( $get )
 		{
