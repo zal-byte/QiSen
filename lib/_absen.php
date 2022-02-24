@@ -40,6 +40,27 @@
 			}
 		}
 
+		public static function getSiswaByKelas( $get )
+		{
+			$kelas = Handler::VALIDATE($get, 'kelas');
+
+
+			Handler::$context = 'getSiswaByKelas';
+			self::$response[Handler::$context] = array();
+
+
+			$prepare = Handler::PREPARE( ABSEN::getSiswaByKelas, array("kelas"=>$kelas));
+			if( $prepare )
+			{
+				
+			}else{
+
+			}
+
+
+			Handler::printt(self::$response);
+		}
+
 		public static function getKelas()
 		{
 			Handler::$context = 'getKelas';

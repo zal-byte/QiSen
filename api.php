@@ -120,6 +120,16 @@
 		{
 			ABSEN::getKelas( );
 		}
+
+		else if( $request =='getSiswaByKelas')
+		{
+			ABSEN::getSiswaByKelas( $get );
+		}
+
+		else if( $request == 'getGuruByKelas')
+		{
+			ABSEN::getGuruByKelas( $get );
+		}
 		
 
 	}

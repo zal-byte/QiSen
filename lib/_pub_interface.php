@@ -42,6 +42,9 @@
 
 		const getKelas = 'SELECT DISTINCT kelas FROM siswa';
 
+		const getSiswaByKelas = 'SELECT * FROM siswa WHERE Kelas=:kelas';
+		const getGuruByKelas = 'SELECT * FROM guru WHERE Walikelas= :walikelas';
+
 
 
 
