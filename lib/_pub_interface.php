@@ -40,6 +40,7 @@
 		const hasAbsenToday = 'SELECT * FROM absen WHERE Kelas_absen=:kelas AND Tanggal_absen=:tanggal AND NIS=:nis';
 
 
+		const getKelas = 'SELECT DISTINCT kelas FROM siswa';
 
 
 

@@ -40,6 +40,33 @@
 			}
 		}
 
+		public static function getKelas()
+		{
+			Handler::$context = 'getKelas';
+			self::$response[Handler::$context] = array();
+
+
+			$prepare = Handler::PREPARE( ABSEN::getKelas );
+			if( $prepare )
+			{
+				if( $prepare->rowCount() > 0 )
+				{
+					$re['res'] = true;
+					
+					$data = Handler::fetchAssoc( $prepare );
+					for($i = 0; $i < count($data); $i++ ){
+						$re['kelas'] = $data[$i]['kelas'];
+						array_push(self::$response[Handler::$context], $re);
+					}
+				}else{
+					Handler::HandlerError("tidak_ada_ada");
+				}
+			}else{
+				Handler::HandlerError("eksekusi_gagal");
+			}
+
+			Handler::printt( self::$response );
+		}
 
 		public static function hasAbsenToday( $get )
 		{

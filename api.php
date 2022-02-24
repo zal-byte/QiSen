@@ -115,6 +115,11 @@
 		{
 			ABSEN::hasAbsenToday( $get );
 		}
+
+		else if( $request == 'getKelas')
+		{
+			ABSEN::getKelas( );
+		}
 		
 
 	}
