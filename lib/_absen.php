@@ -51,16 +51,63 @@
 
 			$prepare = Handler::PREPARE( ABSEN::getSiswaByKelas, array("kelas"=>$kelas));
 			if( $prepare )
-			{
-				
-			}else{
+			{		
+				if( $prepare->rowCount() > 0 )
+				{
+					$re['res'] = true;
+					$data = Handler::fetchAssoc( $prepare );
+					for( $i = 0; $i < count($data); $i++)
+					{
+						$re['identifier'] = $data[$i]['NIS'];
+						$re['nama'] = $data[$i]['Nama'];
+						$re['foto'] = $data[$i]['Foto'];
 
+						array_push(self::$response[Handler::$context], $re);
+					}
+				}else{
+					Handler::HandlerError("tidak_ada_data");
+				}
+			}else{
+				Handler::HandlerError("eksekusi_gagal");
 			}
 
 
 			Handler::printt(self::$response);
 		}
+		public static function getGuruByKelas( $get )
+		{
+			$kelas = Handler::VALIDATE($get, 'kelas');
 
+
+			Handler::$context = 'getGuruByKelas';
+			self::$response[Handler::$context] = array();
+
+
+			$prepare = Handler::PREPARE( ABSEN::getGuruByKelas, array("walikelas"=>$kelas));
+			if( $prepare )
+			{		
+				if( $prepare->rowCount() > 0 )
+				{
+					$re['res'] = true;
+					$data = Handler::fetchAssoc( $prepare );
+					for( $i = 0; $i < count($data); $i++)
+					{
+						$re['identifier'] = $data[$i]['NIS'];
+						$re['nama'] = $data[$i]['Nama'];
+						$re['foto'] = $data[$i]['Foto'];
+
+						array_push(self::$response[Handler::$context], $re);
+					}
+				}else{
+					Handler::HandlerError("tidak_ada_data");
+				}
+			}else{
+				Handler::HandlerError("eksekusi_gagal");
+			}
+
+
+			Handler::printt(self::$response);
+		}
 		public static function getKelas()
 		{
 			Handler::$context = 'getKelas';
