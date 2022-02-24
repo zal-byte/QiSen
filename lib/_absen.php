@@ -27,8 +27,8 @@
 
 		private static function checkDir()
 		{
-			$user = "../img/user";
-			$absen = "../img/absen";
+			$user = ABSEN::userImg;
+			$absen = ABSEN::absenPath;
 
 			if(!file_exists($user))
 			{	
@@ -55,12 +55,13 @@
 			$prepare = Handler::PREPARE( ABSEN::hasAbsenToday, array('kelas'=>$kelas, 'tanggal'=>$tanggal, 'nis'=>$nis));
 			if( $prepare )
 			{
+				$re['res'] = true;
 				if( $prepare->rowCount() > 0 )
 				{
 					//sudah absen dihari ini
-					$re['res'] = true;
+					$re['status'] = true;
 				}else{
-					$re['res'] = false;
+					$re['status'] = false;
 				}
 
 				array_push(self::$response[Handler::$context], $re);

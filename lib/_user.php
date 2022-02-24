@@ -347,7 +347,7 @@
             $jenis_kelamin = Handler::VALIDATE( $post, "jenis_kelamin");
             $kelas = Handler::VALIDATE( $post, 'kelas');
             $agama = Handler::VALIDATE( $post, "agama");
-            $foto = "img/user/" . $NIS . '_' . str_replace(' ', '_') . ".jpg";
+            $foto = "img/user/" . $NIS . '_' . str_replace(' ', '_', $nama) . ".jpg";
             $password = Handler::VALIDATE($post, "password");
 
 			$imageData = Handler::VALIDATE( $post, 'imageData');
