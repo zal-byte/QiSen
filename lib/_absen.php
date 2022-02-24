@@ -92,7 +92,7 @@
 					$data = Handler::fetchAssoc( $prepare );
 					for( $i = 0; $i < count($data); $i++)
 					{
-						$re['identifier'] = $data[$i]['NIS'];
+						$re['identifier'] = $data[$i]['NIK'];
 						$re['nama'] = $data[$i]['Nama'];
 						$re['foto'] = $data[$i]['Foto'];
 
