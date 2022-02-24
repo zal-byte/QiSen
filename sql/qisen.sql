@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2022 at 02:20 AM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 7.0.6
+-- Generation Time: Feb 24, 2022 at 07:08 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -25,13 +27,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `absen`
 --
-
-DROP TABLE IF EXISTS `absen`;
-DROP TABLE IF EXISTS `guru`;
-DROP TABLE IF EXISTS `siswa`;
-DROP TABLE IF EXISTS `informasi_gambar`;
-DROP TABLE IF EXISTS `admin`;
-DROP TABLE IF EXISTS `kurikulum`;
 
 CREATE TABLE `absen` (
   `No_absen` int(11) NOT NULL,
@@ -57,6 +52,7 @@ CREATE TABLE `guru` (
   `Alamat` text NOT NULL,
   `Jenis_kelamin` enum('l','p') NOT NULL,
   `Agama` varchar(50) NOT NULL,
+  `Walikelas` varchar(10) DEFAULT NULL,
   `Foto` text NOT NULL,
   `Password` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -65,8 +61,8 @@ CREATE TABLE `guru` (
 -- Dumping data for table `guru`
 --
 
-INSERT INTO `guru` (`NIK`, `Nama`, `Tanggal_lahir`, `Tempat_lahir`, `Alamat`, `Jenis_kelamin`, `Agama`, `Foto`, `Password`) VALUES
-('1234567890123456', 'Elaina', '1979-02-02', 'Osaka', 'Osaka, Japan.', 'p', 'Islam', 'img/user/default.jpg', 'aa7a3673952488f48f26ffeefdb1a362');
+INSERT INTO `guru` (`NIK`, `Nama`, `Tanggal_lahir`, `Tempat_lahir`, `Alamat`, `Jenis_kelamin`, `Agama`, `Walikelas`, `Foto`, `Password`) VALUES
+('1234567890123456', 'Elaina', '1979-02-02', 'Osaka', 'Osaka, Japan.', 'p', 'Islam', 'XII RPL B', 'img/user/default.jpg', 'aa7a3673952488f48f26ffeefdb1a362');
 
 -- --------------------------------------------------------
 
@@ -78,7 +74,7 @@ CREATE TABLE `informasi_gambar` (
   `Info_gambar` varchar(50) NOT NULL,
   `Tanggal_info` date NOT NULL,
   `Jam_info` time NOT NULL,
-  `Lokasi_info` text,
+  `Lokasi_info` text DEFAULT NULL,
   `Path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -177,6 +173,7 @@ ALTER TABLE `siswa`
 --
 ALTER TABLE `absen`
   MODIFY `No_absen` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Constraints for dumped tables
 --
@@ -187,6 +184,7 @@ ALTER TABLE `absen`
 ALTER TABLE `absen`
   ADD CONSTRAINT `absen_NIK_guru_NIK` FOREIGN KEY (`NIK`) REFERENCES `guru` (`NIK`),
   ADD CONSTRAINT `absen_NIS_siswa_NIS` FOREIGN KEY (`NIS`) REFERENCES `siswa` (`NIS`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

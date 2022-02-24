@@ -83,7 +83,7 @@
 			self::$response[Handler::$context] = array();
 
 
-			$prepare = Handler::PREPARE( ABSEN::getGuruByKelas, array("walikelas"=>$kelas));
+			$prepare = Handler::PREPARE( ABSEN::getGuruByKelas, array("kelas"=>$kelas));
 			if( $prepare )
 			{		
 				if( $prepare->rowCount() > 0 )
