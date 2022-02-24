@@ -347,8 +347,10 @@
             $jenis_kelamin = Handler::VALIDATE( $post, "jenis_kelamin");
             $kelas = Handler::VALIDATE( $post, 'kelas');
             $agama = Handler::VALIDATE( $post, "agama");
-            $foto = Handler::VALIDATE( $post, "foto");
+            $foto = "img/user/" . $NIS . '_' . str_replace(' ', '_') . ".jpg";
             $password = Handler::VALIDATE($post, "password");
+
+			$imageData = Handler::VALIDATE( $post, 'imageData');
 
             $param = array("NIS"=>$NIS,
             "Nama"=>$nama,
@@ -364,21 +366,28 @@
 
             if(self::isSiswaHere( $NIS ) == false)
             { 
-                $prepare = Handler::PREPARE( USER::addSiswa, $param );
 
-                if( $prepare )
-                {
+				if( self::up( $imageData, $foto) != false )
+				{
+					$prepare = Handler::PREPARE( USER::addSiswa, $param );
 
-                    $re["res"] = true;
-                    $re['msg'] = 'Siswa berhasil ditambahkan.';
+					if( $prepare )
+					{
+
+						$re["res"] = true;
+						$re['msg'] = 'siswa_berhasil_ditambahkan';
 
 
-                }else{
-                    Handler::HandlerError("Couldn't execute the query");
-                }
+					}else{
+						Handler::HandlerError("eksekusi_gagal");
+					}
+				}else{
+					Handler::HandlerError('gagal_mengupload_gambar');
+				}
+
             }else{
 
-                Handler::HandlerError("Siswa sudah ada");
+                Handler::HandlerError("siswa_sudah_ada");
 
             }
 
@@ -434,7 +443,7 @@
 			
 
 
-			self::isGuruHere($nik) == false ? null : Handler::HandlerError("Data guru sudah ada");
+			self::isGuruHere($nik) == false ? null : Handler::HandlerError("guru_sudah_ada");
 
 
 			// nama_uniqid()_.jpg
@@ -454,15 +463,15 @@
 				{
 
 					$re['res'] = true;
-					$re['msg'] = 'Data Guru berhasil ditambahkan.';
+					$re['msg'] = 'guru_berhasil_ditambahkan';
 
 				}else{
 
-					Handler::HandlerError("Couldn't execute the query (addGuru)");
+					Handler::HandlerError("eksekusi_gagal");
 
 				}	
 			}else{
-				Handler::HandlerError("Gagal mengupload gambar");
+				Handler::HandlerError("gagal_mengupload_gambar");
 			}
 
 
