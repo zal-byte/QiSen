@@ -110,6 +110,11 @@
 		{
 			ABSEN::cekDisiniHadir( $get );
 		}
+
+		else if( $request == 'hasAbsenToday')
+		{
+			ABSEN::hasAbsenToday( $get );
+		}
 		
 
 	}

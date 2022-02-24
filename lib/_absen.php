@@ -41,6 +41,39 @@
 		}
 
 
+		public static function hasAbsenToday( $get )
+		{
+			Handler::$context = 'hasAbsenToday';
+			self::$response[Handler::$context] = array();
+
+
+			$tanggal = Handler::VALIDATE( $get, 'tanggal');
+			$nis = Handler::VALIDATE( $get, 'nis');
+			$kelas = Handler::VALIDATE($get, 'kelas');
+
+
+			$prepare = Handler::PREPARE( ABSEN::hasAbsenToday, array('kelas'=>$kelas, 'tanggal'=>$tanggal, 'nis'=>$nis));
+			if( $prepare )
+			{
+				if( $prepare->rowCount() > 0 )
+				{
+					//sudah absen dihari ini
+					$re['res'] = true;
+				}else{
+					$re['res'] = false;
+				}
+
+				array_push(self::$response[Handler::$context], $re);
+			}else{
+				Handler::HandlerError('Gagal mengeksekusi data');
+			}
+
+
+			Handler::printt( self::$response );
+
+
+		}
+
 		public static function cekDisiniHadir( $get )
 		{
 			Handler::$context = 'cekDisini';
@@ -71,7 +104,7 @@
 
 						$re['nama'] = $data[$i]['Nama'];
 						$re['status_absen'] = $data[$i]['Status_absen'];
-
+					
 						array_push(self::$response[Handler::$context], $re);
 
 					}

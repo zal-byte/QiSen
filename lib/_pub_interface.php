@@ -34,10 +34,10 @@
 
 		const myAbsen = 'SELECT * FROM absen WHERE NIS=:NIS';
 
-		const cekDisini =  'SELECT * FROM absen LEFT JOIN siswa ON siswa.NIS = absen.NIS WHERE Kelas_absen = :Kelas_absen AND Tanggal_absen = :Tanggal_absen ORDER BY absen.Jam_absen DESC';
-		const cekDisiniToggle = 'SELECT * FROM absen LEFT JOIN siswa ON siswa.NIS = absen.NIS WHERE Kelas_absen = :Kelas_absen AND Tanggal_absen = :Tanggal_absen AND Status_absen = :Status_absen ORDER BY absen.Jam_absen DESC';
+		const cekDisini =  'SELECT * FROM absen LEFT JOIN siswa ON siswa.NIS = absen.NIS LEFT JOIN informasi_gambar ON informasi_gambar.Info_gambar = absen.Info_gambar WHERE Kelas_absen = :Kelas_absen AND Tanggal_absen = :Tanggal_absen ORDER BY absen.Jam_absen DESC';
+		const cekDisiniToggle = 'SELECT * FROM absen LEFT JOIN siswa ON siswa.NIS = absen.NIS LEFT JOIN informasi_gambar ON informasi_gambar.Info_gambar = absen.Info_gambar WHERE Kelas_absen = :Kelas_absen AND Tanggal_absen = :Tanggal_absen AND Status_absen = :Status_absen ORDER BY absen.Jam_absen DESC';
 
-
+		const hasAbsenToday = 'SELECT * FROM absen WHERE Kelas_absen=:kelas AND Tanggal_absen=:tanggal AND NIS=:nis';
 
 
 
