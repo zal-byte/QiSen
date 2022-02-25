@@ -24,6 +24,51 @@
 			self::$con = CONNECTION::getConnection();
 		}
 
+
+		public static function deleteSiswa( $get )
+		{
+
+			Handler::$context = 'deleteSiswa';
+			self::$response[Handler::$context] = array();
+
+			$nis = Handler::VALIDATE( $get, 'identifier');
+
+
+			$prepare = Handler::PREPARE( USER::deleteSiswa, array('NIS'=> $nis));
+			if( $prepare )
+			{
+				$re['res'] = true;
+				$re['msg'] = 'User berhasil dihapus';
+				array_push(self::$response[Handler::$context], $re);
+			}else{
+				Handler::HandlerError("Gagal mengeksekusi data");
+			}
+
+			Handler::printt(self::$response);
+		}
+
+		public static function deleteGuru( $get )
+		{
+
+			Handler::$context = 'deleteGuru';
+			self::$response[Handler::$context] = array();
+
+			$nik = Handler::VALIDATE( $get, 'identifier');
+
+
+			$prepare = Handler::PREPARE( USER::deleteGuru, array('NIK'=> $nik));
+			if( $prepare )
+			{
+				$re['res'] = true;
+				$re['msg'] = 'User berhasil dihapus';
+				array_push(self::$response[Handler::$context], $re);
+			}else{
+				Handler::HandlerError("Gagal mengeksekusi data");
+			}
+
+			Handler::printt(self::$response);
+		}
+
 		public static function userLogin( $data )
 		{
 
@@ -135,6 +180,9 @@
 					if( $user_context__ == 'siswa' )
 					{
 						$re['kelas'] = $data['Kelas'];
+					}else if( $user_context__ == 'guru')
+					{
+						$re['walikelas'] = $data['Walikelas'];
 					}
 					$re['foto'] = $data['Foto'];
 
@@ -157,44 +205,6 @@
 
 
 
-		public static function deleteSiswa( $data )
-        {
-            Handler::$context = "deleteSiswa";
-
-            $NIS = Handler::VALIDATE( $data, 'NIS');
-
-            self::$response[Handler::$context] = array();
-
-            $param = array("NIS"=>$NIS);
-
-            self::isSiswaHere( $NIS ) != false ? null : Handler::HandlerError("Siswa tidak ada");
-
-            $prepare = Handler::PREPARE( USER::deleteSiswaData , $param );
-
-
-            if( self::deleteSiswaAbsen( $NIS ) )
-            {
-                if( $prepare )
-                {
-
-                    $re['res'] = true;
-                    $re['msg'] = 'Siswa has been deleted';
-        
-
-                }else{
-
-                    Handler::HandlerError("Couldn't execute the query.");
-                    
-                }                
-            }else{
-                Handler::HandlerError("Couldn't delete absen data");
-            }
-
-
-            array_push(self::$response[Handler::$context], $re);
-            Handler::printt( self::$response );
-
-        }
 
         private static function deleteSiswaAbsen( $NIS )
         {

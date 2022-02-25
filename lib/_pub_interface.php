@@ -47,7 +47,8 @@
 
 
 
-
+		const deleteSiswa = 'DELETE FROM siswa WHERE NIS = :NIS';
+		const deleteGuru = 'DELETE FROM guru WHERE NIK = :NIK';
 
 
 

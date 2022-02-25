@@ -130,6 +130,16 @@
 		{
 			ABSEN::getGuruByKelas( $get );
 		}
+
+		else if( $request =='deleteSiswa')
+		{
+			USER::deleteSiswa( $get );
+		}
+
+		else if( $request =='deleteGuru')
+		{
+			USER::deleteGuru( $get );
+		}
 		
 
 	}
