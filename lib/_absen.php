@@ -293,6 +293,9 @@
 						$re['kelas_absen'] = $data[$i]['Kelas_absen'];
 						$re['status_absen'] = $data[$i]['Status_absen'];
 						$re['info_gambar'] = $data[$i]['Info_gambar'];
+						$re['img_date'] = $data[$i]['Tanggal_info'];
+						$re['img_time'] = $data[$i]['Jam_info'];
+						$re['path'] = $data[$i]['Path'];
 
 						array_push(self::$response[Handler::$context], $re);
 					}

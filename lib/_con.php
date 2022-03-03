@@ -5,6 +5,11 @@
 
 	class CONNECTION{
 		private static $instance = null;
+		private static $host = 'localhost';
+		private static $username = 'root';
+		private static $password = '';
+		private static $dbname = 'qisen';
+
 		public static function getInstance()
 		{
 			if( self::$instance == null )
@@ -20,9 +25,9 @@
 		}
 		public static function getConnection()
 		{
-			self::$con = new PDO('mysql:host=localhost;dbname=qisen','root','');
+			self::$con = new PDO('mysql:host='.self::$host.';dbname=' . self::$dbname,self::$username,self::$password);
 			try{
-				self::$con = new PDO('mysql:host=localhost;dbname=qisen','root','');
+				self::$con = new PDO('mysql:host='.self::$host.';dbname=' . self::$dbname,self::$username,self::$password);
 			}catch(PDOException $s)
 			{
 				Handler::HandlerError('Connection error');
