@@ -40,6 +40,43 @@
 			}
 		}
 
+		public static function getAbsenByTanggal( $get ){
+			Handler::$context = 'getAbsenByTanggal';
+			self::$response[Handler::$context] = array();
+
+			$tanggal_absen = Handler::VALIDATE($get, 'tanggal');
+			$kelas_absen = Handler::VALIDATE($get, 'kelas');
+
+			$prepare = Handler::PREPARE( ABSEN::laporanKelas, array('tanggal_absen'=>$tanggal_absen, 'kelas_absen'=>$kelas_absen));
+
+			if( $prepare ){
+				if( $prepare->rowCount() > 0 ){
+					$re['res'] = true;
+					$data = Handler::fetchAssoc( $prepare );
+					for( $i = 0 ; $i < count($data); $i++){
+
+						$re['status_absen'] = $data[$i]['Status_absen'];
+						$re['nis']= $data[$i]['NIS'];
+						$re['tanggal_absen'] = $data[$i]['Tanggal_absen'];
+						$re['jam_absen'] = $data[$i]['Jam_absen'];
+						$re['kelas_absen'] = $data[$i]['Kelas_absen'];
+
+						$re['img_date'] = $data[$i]['Tanggal_info'];
+						$re['img_time'] = $data[$i]['Jam_info'];
+						$re['path'] = $data[$i]['Path'];
+
+						array_push(self::$response[Handler::$context], $re);
+					}
+					Handler::printt( self::$response);
+				}else{
+					Handler::HandlerError("no_data");
+				}
+			}else{
+				Handler::HandlerError("execute failed.");
+			}
+
+		}
+
 		public static function getSiswaByKelas( $get )
 		{
 			$kelas = Handler::VALIDATE($get, 'kelas');
@@ -108,6 +145,34 @@
 
 			Handler::printt(self::$response);
 		}
+
+		public static function getTanggal( $get ){
+			Handler::$context = 'getTanggal';
+			self::$response[Handler::$context] = array();
+
+			$kelas = Handler::VALIDATE( $get, 'kelas');
+
+			$prepare = Handler::PREPARE( ABSEN::getTanggal, array('kelas'=>$kelas));
+
+			if( $prepare ){
+				if( $prepare->rowCount() > 0 ){
+					$re['res'] = true;
+					$data = Handler::fetchAssoc($prepare);
+					for($i = 0; $i < count($data); $i++){
+						$da = $data[$i];
+						$re['tanggal_absen'] = $da['Tanggal_absen'];
+						array_push(self::$response[Handler::$context],$re); 
+					}
+					Handler::printt(self::$response);
+				}else{
+					Handler::HandlerError('no_data');
+				}
+			}else{
+				Handler::HandlerError('Execute failed');
+			}
+
+		}
+
 		public static function getKelas()
 		{
 			Handler::$context = 'getKelas';

@@ -140,6 +140,14 @@
 		{
 			USER::deleteGuru( $get );
 		}
+
+		else if( $request == 'getTanggal'){
+			ABSEN::getTanggal( $get );
+		}
+
+		else if ( $request == 'getAbsenByTanggal'){
+			ABSEN::getAbsenByTanggal( $get );
+		}
 		
 
 	}

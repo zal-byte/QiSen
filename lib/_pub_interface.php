@@ -53,8 +53,8 @@
 
 
 		//guru
-		const laporanKelas = 'SELECT * FROM absen LEFT JOIN informasi_gambar ON informasi_gambar.Info_gambar = absen.Info_gambar WHERE Tanggal_absen=:tanggal_absen';
-		const getTanggal = 'SELECT DISTINCT Tanggal_absen FROM absen WHERE Kelas_absen=:kelas_absen';
+		const laporanKelas = 'SELECT * FROM absen LEFT JOIN informasi_gambar ON informasi_gambar.Info_gambar = absen.Info_gambar WHERE Tanggal_absen=:tanggal_absen AND Kelas_absen = :kelas_absen';
+		const getTanggal = 'SELECT DISTINCT Tanggal_absen FROM absen WHERE Kelas_absen=:kelas';
 
 
 		//siswa

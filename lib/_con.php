@@ -6,9 +6,9 @@
 	class CONNECTION{
 		private static $instance = null;
 		private static $host = 'localhost';
-		private static $username = 'root';
-		private static $password = '';
-		private static $dbname = 'qisen';
+		private static $username = 'blyatblyatqisen';
+		private static $password = 'zalbyte00';
+		private static $dbname = 'blyatblyatqisen';
 
 		public static function getInstance()
 		{
